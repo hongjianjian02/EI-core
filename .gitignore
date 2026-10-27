@@ -1,0 +1,28 @@
+# ---- Gradle ----
+.gradle/
+.gradle-home/
+build/
+tools/
+
+# ---- IDE ----
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+
+# ---- 运行/日志 ----
+run/
+logs/
+*.log
+
+# ---- 大文件编译依赖（从整合包 mods 目录复制，不提交）----
+libs/twilightforest.jar
+libs/*.zip
+
+# ---- 系统 ----
+.DS_Store
+Thumbs.db
+
+# 例外：Gradle Wrapper 的 jar 需要提交
+!gradle/wrapper/gradle-wrapper.jar

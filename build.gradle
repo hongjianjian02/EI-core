@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'net.neoforged.moddev'
+}
+
+version = '1.0.0'
+group = 'com.mysterious'
+
+base {
+    archivesName = 'EI core'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+neoForge {
+    version = '21.1.265'
+
+    mods {
+        mysterious {
+            sourceSet sourceSets.main
+        }
+    }
+
+    runs {
+        client {
+            client()
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url = uri('https://maven.theillusivec4.top/') }
+}
+
+dependencies {
+    compileOnly files('libs/curios.jar')
+    compileOnly files('libs/twilightforest.jar')
+}
