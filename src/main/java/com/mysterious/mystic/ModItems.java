@@ -14,6 +14,9 @@ public class ModItems {
     public static final DeferredItem<Item> UNSTABLE_RUNE_GEM =
             ITEMS.registerItem("unstable_rune_gem", Item::new, new Item.Properties());
 
+    public static final DeferredItem<Item> ACTIVATED_RUNE_GEM =
+            ITEMS.registerItem("activated_rune_gem", GlintItem::new, new Item.Properties());
+
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
     }
