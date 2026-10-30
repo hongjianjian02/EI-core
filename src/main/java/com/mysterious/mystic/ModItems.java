@@ -11,8 +11,8 @@ public class ModItems {
     public static final DeferredItem<Item> MYSTIC_CROWN =
             ITEMS.registerItem("mystic_crown", Item::new, new Item.Properties().stacksTo(1));
 
-    public static final DeferredItem<Item> UNSTABLE_RUNE_KEYSTONE =
-            ITEMS.registerItem("unstable_rune_keystone", Item::new, new Item.Properties());
+    public static final DeferredItem<Item> UNSTABLE_RUNE_GEM =
+            ITEMS.registerItem("unstable_rune_gem", Item::new, new Item.Properties());
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
