@@ -10,6 +10,7 @@ public class MysteriousMod {
 
     public MysteriousMod(IEventBus modBus) {
         ModItems.register(modBus);
+        ModCreativeTabs.register(modBus);
         NeoForge.EVENT_BUS.register(CrownHandler.class);
     }
 }
