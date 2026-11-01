@@ -9,6 +9,7 @@ public class MysteriousMod {
     public static final String MODID = "eicore";
 
     public MysteriousMod(IEventBus modBus) {
+        ModBlocks.register(modBus);
         ModItems.register(modBus);
         ModCreativeTabs.register(modBus);
         NeoForge.EVENT_BUS.register(CrownHandler.class);

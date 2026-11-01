@@ -1,5 +1,6 @@
 package com.mysterious.mystic;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -19,6 +20,9 @@ public class ModItems {
 
     public static final DeferredItem<Item> TIANSHU_STAR =
             ITEMS.registerItem("tianshu_star", Item::new, new Item.Properties());
+
+    public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =
+            ITEMS.registerSimpleBlockItem("compressed_marble", ModBlocks.COMPRESSED_MARBLE);
 
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
