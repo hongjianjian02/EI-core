@@ -19,6 +19,7 @@ public final class ModCreativeTabs {
                     .displayItems((parameters, output) -> {
                         output.accept(ModItems.UNSTABLE_RUNE_GEM.get());
                         output.accept(ModItems.ACTIVATED_RUNE_GEM.get());
+                        output.accept(ModItems.TIANSHU_STAR.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());
                     })
                     .build());

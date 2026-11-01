@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "eicore"
-version = "1.0.0"
+version = "1.0.1"
 displayName = "EI core"
 authors = "JianJian_"
 description = '''EI core - Mysterious / Entropy-Increase 整合包的专属内容模组。'''

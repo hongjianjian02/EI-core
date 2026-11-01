@@ -17,6 +17,9 @@ public class ModItems {
     public static final DeferredItem<Item> ACTIVATED_RUNE_GEM =
             ITEMS.registerItem("activated_rune_gem", GlintItem::new, new Item.Properties());
 
+    public static final DeferredItem<Item> TIANSHU_STAR =
+            ITEMS.registerItem("tianshu_star", Item::new, new Item.Properties());
+
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
     }
