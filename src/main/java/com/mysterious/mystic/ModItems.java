@@ -21,6 +21,9 @@ public class ModItems {
     public static final DeferredItem<Item> TIANSHU_STAR =
             ITEMS.registerItem("tianshu_star", Item::new, new Item.Properties());
 
+    public static final DeferredItem<Item> MITHRIL_INGOT =
+            ITEMS.registerItem("mithril_ingot", Item::new, new Item.Properties());
+
     public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =
             ITEMS.registerSimpleBlockItem("compressed_marble", ModBlocks.COMPRESSED_MARBLE);
 
