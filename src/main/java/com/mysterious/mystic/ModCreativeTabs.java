@@ -21,6 +21,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ACTIVATED_RUNE_GEM.get());
                         output.accept(ModItems.TIANSHU_STAR.get());
                         output.accept(ModItems.MITHRIL_INGOT.get());
+                        output.accept(ModItems.KENGJIN_INGOT.get());
                         output.accept(ModItems.COMPRESSED_MARBLE_ITEM.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());
                     })
