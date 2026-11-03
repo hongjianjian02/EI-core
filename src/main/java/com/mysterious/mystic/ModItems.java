@@ -30,6 +30,9 @@ public class ModItems {
     public static final DeferredItem<Item> TIANGANG_INGOT =
             ITEMS.registerItem("tiangang_ingot", Item::new, new Item.Properties());
 
+    public static final DeferredItem<Item> TIANQING_INGOT =
+            ITEMS.registerItem("tianqing_ingot", Item::new, new Item.Properties());
+
     public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =
             ITEMS.registerSimpleBlockItem("compressed_marble", ModBlocks.COMPRESSED_MARBLE);
 
