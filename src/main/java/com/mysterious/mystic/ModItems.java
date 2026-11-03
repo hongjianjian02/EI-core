@@ -33,6 +33,9 @@ public class ModItems {
     public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =
             ITEMS.registerSimpleBlockItem("compressed_marble", ModBlocks.COMPRESSED_MARBLE);
 
+    public static final DeferredItem<BlockItem> TIANQING_ORE_ITEM =
+            ITEMS.registerSimpleBlockItem("tianqing_ore", ModBlocks.TIANQING_ORE);
+
     public static void register(IEventBus bus) {
         ITEMS.register(bus);
     }

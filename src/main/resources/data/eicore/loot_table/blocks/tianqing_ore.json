@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "random_sequence": "eicore:blocks/tianqing_ore",
+  "pools": [
+    {
+      "rolls": 1,
+      "bonus_rolls": 0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "eicore:tianqing_ore"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}
