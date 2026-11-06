@@ -144,7 +144,11 @@ public class VoidHerrscher extends Monster {
         for (ServerPlayer player : nearby) {
             this.bossBar.addPlayer(player);
         }
-        this.bossBar.getPlayers().removeIf(player -> !nearby.contains(player));
+        for (ServerPlayer player : List.copyOf(this.bossBar.getPlayers())) {
+            if (!nearby.contains(player)) {
+                this.bossBar.removePlayer(player);
+            }
+        }
     }
 
     private void updatePhases() {
