@@ -39,5 +39,5 @@ repositories {
 
 dependencies {
     compileOnly files('libs/curios.jar')
-    compileOnly files('libs/twilightforest.jar')
+    compileOnly files('libs/twilightforest.jar') 
 }

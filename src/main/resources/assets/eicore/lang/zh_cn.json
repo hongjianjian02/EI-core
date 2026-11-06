@@ -1,15 +1,13 @@
 {
-  "item.eicore.mystic_crown": "神秘王冠",
-  "item.eicore.unstable_rune_gem": "不稳定的符文宝石",
-  "item.eicore.activated_rune_gem": "激活的符文宝石",
-  "item.eicore.voidcaller": "空之律者召唤器",
-  "entity.eicore.void_herrscher": "空之律者",
-  "item.eicore.tianshu_star": "天枢之星",
-  "item.eicore.mithril_ingot": "秘银锭",
-  "item.eicore.kengjin_ingot": "铿金锭",
-  "item.eicore.tiangang_ingot": "天岗锭",
-  "item.eicore.tianqing_ingot": "天青锭",
-  "block.eicore.compressed_marble": "压缩大理石",
-  "block.eicore.tianqing_ore": "天青矿石",
-  "itemGroup.eicore.main": "EI 核心"
+  "item.eicore.mystic_crown": "\u795e\u79d8\u738b\u51a0",
+  "item.eicore.unstable_rune_gem": "\u4e0d\u7a33\u5b9a\u7684\u7b26\u6587\u5b9d\u77f3",
+  "item.eicore.activated_rune_gem": "\u6fc0\u6d3b\u7684\u7b26\u6587\u5b9d\u77f3",
+  "item.eicore.tianshu_star": "\u5929\u67a2\u4e4b\u661f",
+  "item.eicore.mithril_ingot": "\u79d8\u94f6\u952d",
+  "item.eicore.kengjin_ingot": "\u94ff\u91d1\u952d",
+  "item.eicore.tiangang_ingot": "\u5929\u7f61\u952d",
+  "item.eicore.tianqing_ingot": "\u5929\u9752\u952d",
+  "block.eicore.compressed_marble": "\u538b\u7f29\u5927\u7406\u77f3",
+  "block.eicore.tianqing_ore": "\u5929\u9752\u77ff\u77f3",
+  "itemGroup.eicore.main": "EI \u6838\u5fc3"
 }

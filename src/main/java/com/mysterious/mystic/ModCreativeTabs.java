@@ -24,7 +24,6 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.KENGJIN_INGOT.get());
                         output.accept(ModItems.TIANGANG_INGOT.get());
                         output.accept(ModItems.TIANQING_INGOT.get());
-                        output.accept(ModItems.VOIDCALLER.get());
                         output.accept(ModItems.COMPRESSED_MARBLE_ITEM.get());
                         output.accept(ModItems.TIANQING_ORE_ITEM.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());
