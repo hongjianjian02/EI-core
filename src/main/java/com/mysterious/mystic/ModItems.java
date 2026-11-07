@@ -33,14 +33,7 @@ public class ModItems {
     public static final DeferredItem<Item> TIANQING_INGOT =
             ITEMS.registerItem("tianqing_ingot", Item::new, new Item.Properties());
 
-    public static final DeferredItem<Item> TREASUREBOX =
-            ITEMS.registerItem("treasurebox", Item::new, new Item.Properties().stacksTo(1));
 
-    public static final DeferredItem<Item> SPECIALBAG =
-            ITEMS.registerItem("specialbag", Item::new, new Item.Properties());
-
-    public static final DeferredItem<Item> COREGOD =
-            ITEMS.registerItem("coregod", Item::new, new Item.Properties().stacksTo(1));
     public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =
             ITEMS.registerSimpleBlockItem("compressed_marble", ModBlocks.COMPRESSED_MARBLE);
 

@@ -7,7 +7,7 @@ modId = "eicore"
 version = "1.0.1"
 displayName = "EI core"
 authors = "JianJian_"
-description = '''EI core - Mysterious / Entropy-Increase 閺佹潙鎮庨崠鍛畱娑撴挸鐫橀崘鍛啇濡紕绮嶉妴?''
+description = '''EI core - Entropy-Increase core mod'''
 
 [[dependencies.eicore]]
 modId = "neoforge"
