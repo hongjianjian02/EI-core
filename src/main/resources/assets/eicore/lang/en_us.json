@@ -8,7 +8,11 @@
   "item.eicore.kengjin_ingot": "Kengjin Ingot",
   "item.eicore.tiangang_ingot": "Tiangang Ingot",
   "item.eicore.tianqing_ingot": "Tianqing Ingot",
+  "item.eicore.sunlight_alloy_ingot": "Sunlight Alloy Ingot",
+  "item.eicore.ice_cube": "Ice Cube",
   "block.eicore.compressed_marble": "Compressed Marble",
   "block.eicore.tianqing_ore": "Tianqing Ore",
+  "block.eicore.mithril_block": "Mithril Block",
+  "block.eicore.kengjin_block": "Kengjin Block",
   "itemGroup.eicore.main": "EI core"
 }

@@ -1,6 +1,8 @@
 {
   "values": [
     "eicore:compressed_marble",
-    "eicore:tianqing_ore"
+    "eicore:tianqing_ore",
+    "eicore:mithril_block",
+    "eicore:kengjin_block"
   ]
 }

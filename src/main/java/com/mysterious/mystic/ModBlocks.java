@@ -26,6 +26,20 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)));
 
+    public static final DeferredBlock<Block> MITHRIL_BLOCK =
+            BLOCKS.register("mithril_block", () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)));
+
+    public static final DeferredBlock<Block> KENGJIN_BLOCK =
+            BLOCKS.register("kengjin_block", () -> new Block(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_RED)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL)));
+
     private ModBlocks() {
     }
 
