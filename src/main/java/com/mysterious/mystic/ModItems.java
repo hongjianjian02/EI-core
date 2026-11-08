@@ -21,6 +21,9 @@ public class ModItems {
     public static final DeferredItem<Item> TIANSHU_STAR =
             ITEMS.registerItem("tianshu_star", Item::new, new Item.Properties());
 
+    public static final DeferredItem<Item> STAR_RING =
+            ITEMS.registerItem("star_ring", Item::new, new Item.Properties());
+
     public static final DeferredItem<Item> MITHRIL_INGOT =
             ITEMS.registerItem("mithril_ingot", Item::new, new Item.Properties());
 

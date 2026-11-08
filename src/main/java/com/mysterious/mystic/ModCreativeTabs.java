@@ -20,6 +20,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.UNSTABLE_RUNE_GEM.get());
                         output.accept(ModItems.ACTIVATED_RUNE_GEM.get());
                         output.accept(ModItems.TIANSHU_STAR.get());
+                        output.accept(ModItems.STAR_RING.get());
                         output.accept(ModItems.MITHRIL_INGOT.get());
                         output.accept(ModItems.KENGJIN_INGOT.get());
                         output.accept(ModItems.TIANGANG_INGOT.get());
