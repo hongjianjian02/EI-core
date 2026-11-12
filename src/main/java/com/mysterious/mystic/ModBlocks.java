@@ -1,6 +1,7 @@
 package com.mysterious.mystic;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -25,6 +26,16 @@ public final class ModBlocks {
                     .strength(3.0F, 3.0F)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE)));
+
+    public static final DeferredBlock<StarlightDraconiumOreBlock> HAZE_ICE_DRACONIUM_ORE =
+            BLOCKS.register("haze_ice_draconium_ore", () -> new StarlightDraconiumOreBlock(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE)
+                            .mapColor(MapColor.COLOR_LIGHT_BLUE)));
+
+    public static final DeferredBlock<StarlightDraconiumOreBlock> VOIDSTONE_DRACONIUM_ORE =
+            BLOCKS.register("voidstone_draconium_ore", () -> new StarlightDraconiumOreBlock(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_ORE)
+                            .mapColor(MapColor.COLOR_BLACK)));
 
     public static final DeferredBlock<Block> MITHRIL_BLOCK =
             BLOCKS.register("mithril_block", () -> new Block(BlockBehaviour.Properties.of()

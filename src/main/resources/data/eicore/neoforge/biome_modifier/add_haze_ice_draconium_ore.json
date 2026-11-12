@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#eicore:has_haze_ice_draconium_ore",
+  "features": "eicore:haze_ice_draconium_ore",
+  "step": "underground_ores"
+}

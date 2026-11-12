@@ -29,6 +29,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ICE_CUBE.get());
                         output.accept(ModItems.COMPRESSED_MARBLE_ITEM.get());
                         output.accept(ModItems.TIANQING_ORE_ITEM.get());
+                        output.accept(ModItems.HAZE_ICE_DRACONIUM_ORE_ITEM.get());
+                        output.accept(ModItems.VOIDSTONE_DRACONIUM_ORE_ITEM.get());
                         output.accept(ModItems.MITHRIL_BLOCK_ITEM.get());
                         output.accept(ModItems.KENGJIN_BLOCK_ITEM.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());

@@ -26,3 +26,4 @@ Thumbs.db
 
 # 例外：Gradle Wrapper 的 jar 需要提交
 !gradle/wrapper/gradle-wrapper.jar
+*.md

@@ -12,6 +12,8 @@
   "item.eicore.ice_cube": "Ice Cube",
   "block.eicore.compressed_marble": "Compressed Marble",
   "block.eicore.tianqing_ore": "Tianqing Ore",
+  "block.eicore.haze_ice_draconium_ore": "Haze Ice Draconium Ore",
+  "block.eicore.voidstone_draconium_ore": "Voidstone Draconium Ore",
   "block.eicore.mithril_block": "Mithril Block",
   "block.eicore.kengjin_block": "Kengjin Block",
   "itemGroup.eicore.main": "EI core"

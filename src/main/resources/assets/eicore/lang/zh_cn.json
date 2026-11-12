@@ -12,6 +12,8 @@
   "item.eicore.ice_cube": "\u51b0\u7acb\u65b9",
   "block.eicore.compressed_marble": "\u538b\u7f29\u5927\u7406\u77f3",
   "block.eicore.tianqing_ore": "\u5929\u9752\u77ff\u77f3",
+  "block.eicore.haze_ice_draconium_ore": "霾冰龙矿",
+  "block.eicore.voidstone_draconium_ore": "虚空石龙矿",
   "block.eicore.mithril_block": "\u79d8\u94f6\u5757",
   "block.eicore.kengjin_block": "\u94ff\u91d1\u5757",
   "itemGroup.eicore.main": "EI \u6838\u5fc3"

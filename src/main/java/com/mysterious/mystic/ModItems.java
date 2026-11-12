@@ -49,6 +49,12 @@ public class ModItems {
     public static final DeferredItem<BlockItem> TIANQING_ORE_ITEM =
             ITEMS.registerSimpleBlockItem("tianqing_ore", ModBlocks.TIANQING_ORE);
 
+    public static final DeferredItem<BlockItem> HAZE_ICE_DRACONIUM_ORE_ITEM =
+            ITEMS.registerSimpleBlockItem("haze_ice_draconium_ore", ModBlocks.HAZE_ICE_DRACONIUM_ORE);
+
+    public static final DeferredItem<BlockItem> VOIDSTONE_DRACONIUM_ORE_ITEM =
+            ITEMS.registerSimpleBlockItem("voidstone_draconium_ore", ModBlocks.VOIDSTONE_DRACONIUM_ORE);
+
     public static final DeferredItem<BlockItem> MITHRIL_BLOCK_ITEM =
             ITEMS.registerSimpleBlockItem("mithril_block", ModBlocks.MITHRIL_BLOCK);
 

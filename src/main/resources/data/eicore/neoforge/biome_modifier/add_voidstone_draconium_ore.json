@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#eicore:has_voidstone_draconium_ore",
+  "features": "eicore:voidstone_draconium_ore",
+  "step": "underground_ores"
+}
