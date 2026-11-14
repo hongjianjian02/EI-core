@@ -40,4 +40,5 @@ repositories {
 dependencies {
     compileOnly files('libs/curios.jar')
     compileOnly files('libs/twilightforest.jar') 
+    implementation files('libs/geckolib.jar')
 }

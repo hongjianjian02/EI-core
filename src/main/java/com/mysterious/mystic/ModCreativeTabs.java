@@ -34,6 +34,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.MITHRIL_BLOCK_ITEM.get());
                         output.accept(ModItems.KENGJIN_BLOCK_ITEM.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());
+                        output.accept(ModItems.ELECTRIC_EEL_SPAWN_EGG.get());
                     })
                     .build());
 

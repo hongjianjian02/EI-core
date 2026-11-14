@@ -18,6 +18,7 @@ logs/
 
 # ---- 大文件编译依赖（从整合包 mods 目录复制，不提交）----
 libs/twilightforest.jar
+libs/geckolib.jar
 libs/*.zip
 
 # ---- 系统 ----

@@ -16,5 +16,7 @@
   "block.eicore.voidstone_draconium_ore": "Voidstone Draconium Ore",
   "block.eicore.mithril_block": "Mithril Block",
   "block.eicore.kengjin_block": "Kengjin Block",
-  "itemGroup.eicore.main": "EI core"
+  "itemGroup.eicore.main": "EI core",
+  "entity.eicore.electric_eel": "Electric Eel",
+  "item.eicore.electric_eel_spawn_egg": "Electric Eel Spawn Egg"
 }

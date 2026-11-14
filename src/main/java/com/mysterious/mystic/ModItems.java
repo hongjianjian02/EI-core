@@ -3,6 +3,7 @@ package com.mysterious.mystic;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -41,6 +42,10 @@ public class ModItems {
 
     public static final DeferredItem<Item> ICE_CUBE =
             ITEMS.registerItem("ice_cube", Item::new, new Item.Properties());
+
+    public static final DeferredItem<DeferredSpawnEggItem> ELECTRIC_EEL_SPAWN_EGG =
+            ITEMS.registerItem("electric_eel_spawn_egg", properties ->
+                    new DeferredSpawnEggItem(ModEntities.ELECTRIC_EEL, 0x303C25, 0xB6AC66, properties));
 
 
     public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =

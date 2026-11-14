@@ -16,5 +16,7 @@
   "block.eicore.voidstone_draconium_ore": "虚空石龙矿",
   "block.eicore.mithril_block": "\u79d8\u94f6\u5757",
   "block.eicore.kengjin_block": "\u94ff\u91d1\u5757",
-  "itemGroup.eicore.main": "EI \u6838\u5fc3"
+  "itemGroup.eicore.main": "EI \u6838\u5fc3",
+  "entity.eicore.electric_eel": "电鳗",
+  "item.eicore.electric_eel_spawn_egg": "电鳗刷怪蛋"
 }

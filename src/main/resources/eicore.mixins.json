@@ -6,7 +6,8 @@
   "mixins": [
     "BloodyAltarHeightMixin",
     "CoreforgeRuinsHeightMixin",
-    "ChaosIslandDraconiumMixin"
+    "ChaosIslandDraconiumMixin",
+    "PneumaticHeatPropertiesTemperatureMixin"
   ],
   "injectors": {
     "defaultRequire": 1

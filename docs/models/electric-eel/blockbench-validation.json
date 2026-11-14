@@ -1,0 +1,15 @@
+{
+  "project": "electric_eel_runtime",
+  "format": "bedrock",
+  "cubes": 17,
+  "bones": 8,
+  "animations": [
+    {
+      "name": "animation.electric_eel.swim",
+      "length": 1.6,
+      "loop": "loop"
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}
