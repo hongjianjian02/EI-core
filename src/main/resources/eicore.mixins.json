@@ -7,9 +7,13 @@
     "BloodyAltarHeightMixin",
     "CoreforgeRuinsHeightMixin",
     "ChaosIslandDraconiumMixin",
-    "PneumaticHeatPropertiesTemperatureMixin"
+    "PneumaticHeatPropertiesTemperatureMixin",
+    "DraconicAdditionsEnergyCapabilityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "client": [
+    "NuclearcraftEmiFluidIdMixin"
+  ]
 }

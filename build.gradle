@@ -40,5 +40,7 @@ repositories {
 dependencies {
     compileOnly files('libs/curios.jar')
     compileOnly files('libs/twilightforest.jar') 
+    compileOnly files('libs/draconicevolution.jar')
+    compileOnly files('libs/brandonscore.jar')
     implementation files('libs/geckolib.jar')
 }
