@@ -35,6 +35,8 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.KENGJIN_BLOCK_ITEM.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());
                         output.accept(ModItems.ELECTRIC_EEL_SPAWN_EGG.get());
+                        output.accept(ModItems.BAIWEI_SEEDS.get());
+                        output.accept(ModItems.YOUKAI_FEAST_SEEDS.get());
                     })
                     .build());
 

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "eicore:item/youkai_feast_seeds"
+  }
+}

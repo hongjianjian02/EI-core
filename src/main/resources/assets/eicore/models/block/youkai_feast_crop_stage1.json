@@ -1,0 +1,98 @@
+{
+  "format_version": "1.9.0",
+  "credit": "Made with Blockbench",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "2": "eicore:block/youkai_feast_crop_stage1",
+    "particle": "#2"
+  },
+  "elements": [
+    {
+      "name": "youkai_front",
+      "from": [
+        0,
+        -1,
+        8
+      ],
+      "to": [
+        16,
+        15,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          7,
+          8
+        ]
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#2"
+        },
+        "south": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#2"
+        }
+      }
+    },
+    {
+      "name": "youkai_side",
+      "from": [
+        8,
+        -1,
+        0
+      ],
+      "to": [
+        8,
+        15,
+        16
+      ],
+      "shade": false,
+      "rotation": {
+        "angle": 45,
+        "axis": "y",
+        "origin": [
+          8,
+          7,
+          8
+        ]
+      },
+      "faces": {
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#2"
+        },
+        "west": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#2"
+        }
+      }
+    }
+  ]
+}

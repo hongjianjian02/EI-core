@@ -1,0 +1,34 @@
+{
+  "minecraft": "1.21.1",
+  "version": "1.9.0",
+  "textures": [
+    {
+      "name": "youkai_feast_seeds",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "youkai_feast_crop_stage0",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "youkai_feast_crop_stage1",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "youkai_feast_crop_stage2",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "youkai_feast_crop_stage3",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "cubes": 2,
+  "errors": [],
+  "warnings": []
+}

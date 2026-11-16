@@ -1,0 +1,36 @@
+{
+  "type": "eicore:treehouse_seeds",
+  "conditions": [
+    {
+      "condition": "minecraft:any_of",
+      "terms": [
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "twilight_treehouses:chests/treehouse_abode/treehouse_abode_normal"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "twilight_treehouses:chests/treehouse_cabin/treehouse_cabin_normal"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "twilight_treehouses:chests/treehouse_chalet/treehouse_chalet_normal"
+        },
+        {
+          "condition": "neoforge:loot_table_id",
+          "loot_table_id": "twilight_treehouses:chests/treehouse_lodge/treehouse_lodge_normal"
+        }
+      ]
+    },
+    {
+      "condition": "minecraft:location_check",
+      "predicate": {
+        "dimension": "twilightforest:twilight_forest"
+      }
+    },
+    {
+      "condition": "minecraft:random_chance",
+      "chance": 0.5
+    }
+  ]
+}

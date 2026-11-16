@@ -13,6 +13,14 @@ public final class ModBlocks {
     public static final DeferredRegister.Blocks BLOCKS =
             DeferredRegister.createBlocks(MysteriousMod.MODID);
 
+    public static final DeferredBlock<BaiweiCropBlock> BAIWEI_CROP =
+            BLOCKS.register("baiwei_crop", () -> new BaiweiCropBlock(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
+
+    public static final DeferredBlock<YoukaiFeastCropBlock> YOUKAI_FEAST_CROP =
+            BLOCKS.register("youkai_feast_crop", () -> new YoukaiFeastCropBlock(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
+
     public static final DeferredBlock<Block> COMPRESSED_MARBLE =
             BLOCKS.register("compressed_marble", () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.QUARTZ)

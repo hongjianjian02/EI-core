@@ -1,0 +1,12 @@
+{
+  "foodCount": 89,
+  "foodIdsVerified": true,
+  "duplicateIds": 0,
+  "ageVariants": 8,
+  "matureOnlyFoodRolls": 1,
+  "seedRolls": 1,
+  "expandedTag": true,
+  "modelVersion": "1.9.0",
+  "resourceReferences": "passed",
+  "automatedGameTests": false
+}

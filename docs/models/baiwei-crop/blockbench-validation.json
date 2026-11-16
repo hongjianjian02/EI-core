@@ -1,0 +1,35 @@
+{
+  "format": "java_block",
+  "minecraft": "1.21.1",
+  "java_block_version": "1.9.0",
+  "cubes": 2,
+  "textures": [
+    {
+      "name": "baiwei_seeds",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "baiwei_crop_stage0",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "baiwei_crop_stage1",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "baiwei_crop_stage2",
+      "width": 16,
+      "height": 16
+    },
+    {
+      "name": "baiwei_crop_stage3",
+      "width": 16,
+      "height": 16
+    }
+  ],
+  "errors": [],
+  "warnings": []
+}

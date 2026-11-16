@@ -1,0 +1,19 @@
+{
+  "mod": "youkaisfeasts",
+  "version": "1.1.2",
+  "mandatoryFoodCount": 173,
+  "optionalFoods": [
+    "peach_tapioca",
+    "peach_yatsuhashi",
+    "moon_rocket",
+    "lemon_black_tea"
+  ],
+  "uniqueFoodIds": 177,
+  "foodIdEvidence": "Food enumerations, registrate constructors and packaged item models",
+  "ageVariants": 8,
+  "foodRolls": 1,
+  "seedRolls": 1,
+  "matureAge": 7,
+  "modelVersion": "1.9.0",
+  "tests": "Static checks passed; not tested in game"
+}

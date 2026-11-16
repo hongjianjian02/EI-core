@@ -18,5 +18,9 @@
   "block.eicore.kengjin_block": "Kengjin Block",
   "itemGroup.eicore.main": "EI core",
   "entity.eicore.electric_eel": "Electric Eel",
-  "item.eicore.electric_eel_spawn_egg": "Electric Eel Spawn Egg"
+  "item.eicore.electric_eel_spawn_egg": "Electric Eel Spawn Egg",
+  "item.eicore.baiwei_seeds": "Baiwei Seeds",
+  "block.eicore.baiwei_crop": "Baiwei Crop",
+  "item.eicore.youkai_feast_seeds": "Youkai Feast Seeds",
+  "block.eicore.youkai_feast_crop": "Youkai Feast Crop"
 }

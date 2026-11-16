@@ -2,6 +2,7 @@ package com.mysterious.mystic;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -9,6 +10,14 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MysteriousMod.MODID);
+
+    public static final DeferredItem<ItemNameBlockItem> BAIWEI_SEEDS =
+            ITEMS.registerItem("baiwei_seeds", properties ->
+                    new ItemNameBlockItem(ModBlocks.BAIWEI_CROP.get(), properties));
+
+    public static final DeferredItem<ItemNameBlockItem> YOUKAI_FEAST_SEEDS =
+            ITEMS.registerItem("youkai_feast_seeds", properties ->
+                    new ItemNameBlockItem(ModBlocks.YOUKAI_FEAST_CROP.get(), properties));
 
     public static final DeferredItem<Item> MYSTIC_CROWN =
             ITEMS.registerItem("mystic_crown", Item::new, new Item.Properties().stacksTo(1));

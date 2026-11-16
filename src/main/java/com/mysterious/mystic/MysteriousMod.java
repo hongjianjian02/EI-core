@@ -13,6 +13,7 @@ public class MysteriousMod {
         ModWorldgen.register(modBus);
         ModEntities.register(modBus);
         ModItems.register(modBus);
+        ModLootModifiers.register(modBus);
         ModCreativeTabs.register(modBus);
         NeoForge.EVENT_BUS.register(CrownHandler.class);
     }
