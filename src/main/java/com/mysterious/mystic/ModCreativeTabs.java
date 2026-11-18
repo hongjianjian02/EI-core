@@ -37,6 +37,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ELECTRIC_EEL_SPAWN_EGG.get());
                         output.accept(ModItems.BAIWEI_SEEDS.get());
                         output.accept(ModItems.YOUKAI_FEAST_SEEDS.get());
+                        output.accept(ModItems.FLAVOR_BOX.get());
                         com.mysterious.mystic.flower.ModFlowers.ITEMS_BY_KIND.values()
                                 .forEach(item -> output.accept(item.get()));
                     })

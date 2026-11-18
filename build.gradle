@@ -45,4 +45,6 @@ dependencies {
     implementation files('libs/geckolib.jar')
     compileOnly files('libs/botania.jar', 'libs/ftbquests.jar', 'libs/ftblibrary.jar', 'libs/ftbteams.jar', 'libs/architectury.jar')
     compileOnly files('libs/jade.jar')
+    compileOnly files('libs/solcarrot.jar', 'libs/solapplepie.jar')
+    compileOnly files('libs/sophisticatedcore.jar', 'libs/sophisticatedbackpacks.jar', 'libs/sophisticatedstorage.jar', 'libs/ftbchunks.jar')
 }

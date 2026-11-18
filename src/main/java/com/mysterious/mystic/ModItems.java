@@ -11,6 +11,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MysteriousMod.MODID);
 
+    public static final DeferredItem<com.mysterious.mystic.foodbox.FlavorBoxItem> FLAVOR_BOX =
+            ITEMS.registerItem("flavor_box", com.mysterious.mystic.foodbox.FlavorBoxItem::new,
+                    new Item.Properties().stacksTo(1).component(
+                            net.minecraft.core.component.DataComponents.CONTAINER,
+                            net.minecraft.world.item.component.ItemContainerContents.EMPTY));
+
     public static final DeferredItem<ItemNameBlockItem> BAIWEI_SEEDS =
             ITEMS.registerItem("baiwei_seeds", properties ->
                     new ItemNameBlockItem(ModBlocks.BAIWEI_CROP.get(), properties));

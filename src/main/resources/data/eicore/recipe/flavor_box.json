@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "immortalers_delight" },
+    { "type": "neoforge:mod_loaded", "modid": "sophisticatedstorage" }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "GCG",
+    "PBP"
+  ],
+  "key": {
+    "G": { "item": "solapplepie:golden_lunchbox" },
+    "P": { "item": "minecraft:bamboo_block" },
+    "S": { "item": "immortalers_delight:spoon" },
+    "C": { "item": "sophisticatedstorage:iron_chest" },
+    "B": { "item": "minecraft:bowl" }
+  },
+  "result": {
+    "id": "eicore:flavor_box",
+    "count": 1
+  }
+}

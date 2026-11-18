@@ -95,3 +95,45 @@ type = "optional"
 versionRange = "[15.10.6,16)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "solcarrot"
+type = "required"
+versionRange = "[1.16.6,1.17)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "solapplepie"
+type = "required"
+versionRange = "[2.2.0,2.3)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "sophisticatedcore"
+type = "optional"
+versionRange = "[1.5.21,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "sophisticatedbackpacks"
+type = "optional"
+versionRange = "[3.26.18,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "sophisticatedstorage"
+type = "optional"
+versionRange = "[1.6.11,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "ftbchunks"
+type = "optional"
+versionRange = "[2101.1.22,2102)"
+ordering = "AFTER"
+side = "BOTH"

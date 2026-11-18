@@ -9,6 +9,7 @@ public class MysteriousMod {
     public static final String MODID = "eicore";
 
     public MysteriousMod(IEventBus modBus) {
+        com.mysterious.mystic.foodbox.FlavorBoxComponents.register(modBus);
         ModBlocks.register(modBus);
         ModWorldgen.register(modBus);
         ModEntities.register(modBus);
