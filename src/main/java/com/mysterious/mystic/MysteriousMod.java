@@ -15,6 +15,8 @@ public class MysteriousMod {
         ModItems.register(modBus);
         ModLootModifiers.register(modBus);
         ModCreativeTabs.register(modBus);
+        com.mysterious.mystic.flower.ModFlowers.register(modBus);
+        com.mysterious.mystic.flower.FlowerEvents.register();
         modBus.addListener(YoukaiHomecomingMigration::registerAliases);
         NeoForge.EVENT_BUS.register(CrownHandler.class);
     }

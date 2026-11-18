@@ -22,5 +22,20 @@
   "item.eicore.baiwei_seeds": "Baiwei Seeds",
   "block.eicore.baiwei_crop": "Baiwei Crop",
   "item.eicore.youkai_feast_seeds": "Youkai Feast Seeds",
-  "block.eicore.youkai_feast_crop": "Youkai Feast Crop"
+  "block.eicore.youkai_feast_crop": "Youkai Feast Crop",
+  "block.eicore.bread_fanatic": "Bread Fanatic",
+  "block.eicore.cow": "Beef Bloom",
+  "block.eicore.eat_iron": "Iron Eater",
+  "block.eicore.agricultural": "Agricultural Bloom",
+  "block.eicore.running_machine": "Treadmill Bloom",
+  "block.eicore.quest": "Quest Bloom",
+  "tooltip.eicore.bread_fanatic": "Consumes bread within 2 blocks: 11000 mana over 6 seconds.",
+  "tooltip.eicore.cow": "Consumes beef within 2 blocks: cooked 20000, raw 14000 mana. Kills adult cows for 30000 mana.",
+  "tooltip.eicore.eat_iron": "Consumes one iron block above or beside it each second for 1000 mana.",
+  "tooltip.eicore.agricultural": "Crop growth within 4 horizontal / 2 vertical blocks: 100 mana, or 750 when mature.",
+  "tooltip.eicore.running_machine": "The placing player sprints on the ground within 1 block for 500 mana per tick. Sneak to exit.",
+  "tooltip.eicore.quest": "The placing team completes a quest within 16 blocks in the same dimension: 20000 mana, once per quest per flower.",
+  "tooltip.eicore.generating_flower": "Bind to a mana spreader within 6 blocks using a Wand of the Forest.",
+  "jade.eicore.mana": "Mana: %s / %s",
+  "config.jade.plugin_eicore.botania_mana": "Botania Mana"
 }

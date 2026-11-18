@@ -22,5 +22,20 @@
   "item.eicore.baiwei_seeds": "百味种子",
   "block.eicore.baiwei_crop": "百味作物",
   "item.eicore.youkai_feast_seeds": "妖宴种子",
-  "block.eicore.youkai_feast_crop": "妖宴作物"
+  "block.eicore.youkai_feast_crop": "妖宴作物",
+  "block.eicore.bread_fanatic": "面包花",
+  "block.eicore.cow": "牛肉花",
+  "block.eicore.eat_iron": "食铁花",
+  "block.eicore.agricultural": "农业花",
+  "block.eicore.running_machine": "跑步机花",
+  "block.eicore.quest": "任务花",
+  "tooltip.eicore.bread_fanatic": "吸收附近 2 格的面包，6 秒产生 11000 魔力。",
+  "tooltip.eicore.cow": "吸收附近 2 格的牛肉：熟肉 20000、生肉 14000 魔力；杀死成年牛产生 30000 魔力。",
+  "tooltip.eicore.eat_iron": "每秒消耗上方或水平相邻的一块铁块，产生 1000 魔力。",
+  "tooltip.eicore.agricultural": "水平 4 格、上下 2 格作物实际生长产生 100 魔力，成熟产生 750 魔力。",
+  "tooltip.eicore.running_machine": "放置者在附近 1 格地面疾跑，每刻产生 500 魔力；潜行退出。",
+  "tooltip.eicore.quest": "放置者队伍在同维度 16 格内完成任务，产生 20000 魔力；每个任务每朵花仅一次。",
+  "tooltip.eicore.generating_flower": "使用森林法杖绑定 6 格内的魔力发射器。",
+  "jade.eicore.mana": "魔力：%s / %s",
+  "config.jade.plugin_eicore.botania_mana": "植物魔法魔力条"
 }

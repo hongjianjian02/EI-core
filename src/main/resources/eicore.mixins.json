@@ -8,7 +8,10 @@
     "CoreforgeRuinsHeightMixin",
     "ChaosIslandDraconiumMixin",
     "PneumaticHeatPropertiesTemperatureMixin",
-    "DraconicAdditionsEnergyCapabilityMixin"
+    "DraconicAdditionsEnergyCapabilityMixin",
+    "CropBonemealFlowerMixin",
+    "MunchdewLeafParticleMixin",
+    "ForestWandBindingPriorityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

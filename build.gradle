@@ -43,4 +43,6 @@ dependencies {
     compileOnly files('libs/draconicevolution.jar')
     compileOnly files('libs/brandonscore.jar')
     implementation files('libs/geckolib.jar')
+    compileOnly files('libs/botania.jar', 'libs/ftbquests.jar', 'libs/ftblibrary.jar', 'libs/ftbteams.jar', 'libs/architectury.jar')
+    compileOnly files('libs/jade.jar')
 }

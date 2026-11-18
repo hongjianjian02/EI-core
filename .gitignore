@@ -20,6 +20,12 @@ logs/
 libs/twilightforest.jar
 libs/geckolib.jar
 libs/*.zip
+libs/botania.jar
+libs/ftbquests.jar
+libs/ftblibrary.jar
+libs/ftbteams.jar
+libs/architectury.jar
+libs/jade.jar
 
 # ---- 系统 ----
 .DS_Store
