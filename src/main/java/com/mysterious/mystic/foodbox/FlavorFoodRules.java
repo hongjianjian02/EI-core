@@ -1,7 +1,9 @@
 package com.mysterious.mystic.foodbox;
 
-import net.minecraft.world.entity.player.Player;
+import com.cazsius.solcarrot.tracking.FoodInstance;
+import com.cazsius.solcarrot.tracking.FoodList;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 
@@ -23,8 +25,23 @@ public final class FlavorFoodRules {
         if (animation != UseAnim.EAT && animation != UseAnim.DRINK) {
             return false;
         }
-        return !com.cazsius.solcarrot.tracking.FoodList.get(player).getEatenFoods()
-                .contains(new com.cazsius.solcarrot.tracking.FoodInstance(food.getItem()))
+        return !carrotHasEaten(player, food)
                 && !com.tarinoita.solsweetpotato.tracking.FoodList.get(player).hasEaten(food.getItem());
+    }
+
+    private static boolean carrotHasEaten(Player player, ItemStack food) {
+        FoodList list = FoodList.get(player);
+        if (list.getEatenFoodCount() == 0) {
+            return false;
+        }
+        // Carrot's fast lookup rejects foods without food properties for a null eater.
+        try {
+            if (food.getFoodProperties(null) != null) {
+                return list.hasEaten(food);
+            }
+        } catch (RuntimeException requiresEater) {
+            // Eligibility with the real player was already checked above.
+        }
+        return list.getEatenFoods().contains(new FoodInstance(food.getItem()));
     }
 }

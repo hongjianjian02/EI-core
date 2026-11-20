@@ -1,9 +1,5 @@
 package com.mysterious.mystic;
 
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -23,7 +19,6 @@ import twilightforest.init.TFDataAttachments;
 public final class CrownHandler {
     private static final ResourceLocation LUCK_ID =
             ResourceLocation.fromNamespaceAndPath(MysteriousMod.MODID, "crown_luck");
-    private static final Map<UUID, Integer> SHIELD_COOLDOWN = new ConcurrentHashMap<>();
 
     private static final int SHIELD_AMOUNT = 3;
     private static final int SHIELD_COOLDOWN_SECONDS = 60;
@@ -47,12 +42,6 @@ public final class CrownHandler {
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
-        }
-
-        UUID uuid = player.getUUID();
-        int cooldown = SHIELD_COOLDOWN.getOrDefault(uuid, 0);
-        if (cooldown > 0) {
-            SHIELD_COOLDOWN.put(uuid, cooldown - 1);
         }
 
         if (player.tickCount % 20 != 0) {
@@ -79,9 +68,7 @@ public final class CrownHandler {
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
-        UUID uuid = player.getUUID();
-
-        if (SHIELD_COOLDOWN.getOrDefault(uuid, 0) > 0) {
+        if (player.getCooldowns().isOnCooldown(ModItems.MYSTIC_CROWN.get())) {
             return;
         }
         if (player.getHealth() > player.getMaxHealth() * 0.5F) {
@@ -101,9 +88,6 @@ public final class CrownHandler {
             return;
         }
 
-        SHIELD_COOLDOWN.put(uuid, SHIELD_COOLDOWN_TICKS);
-
-        // 物品冷却条：在物品图标上显示倒计时
         player.getCooldowns().addCooldown(ModItems.MYSTIC_CROWN.get(), SHIELD_COOLDOWN_TICKS);
 
         player.serverLevel().playSound(null, player.blockPosition(),

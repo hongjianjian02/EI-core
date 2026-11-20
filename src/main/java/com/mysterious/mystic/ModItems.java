@@ -1,5 +1,7 @@
 package com.mysterious.mystic;
 
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
@@ -56,7 +58,8 @@ public class ModItems {
             ITEMS.registerItem("sunlight_alloy_ingot", Item::new, new Item.Properties());
 
     public static final DeferredItem<Item> ICE_CUBE =
-            ITEMS.registerItem("ice_cube", Item::new, new Item.Properties());
+            ITEMS.registerItem("ice_cube", Item::new, new Item.Properties().component(DataComponents.ITEM_NAME,
+                    Component.translatable("item.eicore.ice_cube.named", Component.literal("baka").withColor(0xADD8E6))));
 
     public static final DeferredItem<DeferredSpawnEggItem> ELECTRIC_EEL_SPAWN_EGG =
             ITEMS.registerItem("electric_eel_spawn_egg", properties ->

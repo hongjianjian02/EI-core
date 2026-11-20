@@ -1,5 +1,7 @@
 package com.mysterious.mystic.foodbox;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.component.DataComponents;
@@ -17,7 +19,9 @@ import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.event.entity.living.LivingEntityUseItemEvent;
 
 import java.util.HashSet;
 import java.util.List;
@@ -31,10 +35,35 @@ public final class FlavorBoxItem extends Item {
         super(properties);
     }
 
-    static FlavorBoxContents storage(ItemStack box) {
+    private static ItemContainerContents legacyStorage(ItemStack box) {
+        return box.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+    }
+
+    private static FlavorBoxContents storage(ItemStack box) {
         FlavorBoxContents stored = box.get(FlavorBoxComponents.CONTENTS.get());
-        return stored != null ? stored : new FlavorBoxContents(
-                box.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyStream().toList());
+        if (stored != null) {
+            return stored;
+        }
+        ItemContainerContents legacy = legacyStorage(box);
+        return legacy.getSlots() == 0 ? FlavorBoxContents.EMPTY
+                : new FlavorBoxContents(ImmutableList.copyOf(legacy.nonEmptyItems()));
+    }
+
+    static FlavorBoxContents editableStorage(ItemStack box) {
+        FlavorBoxContents stored = storage(box);
+        if (!isCurrent(box, stored)) {
+            store(box, stored);
+        }
+        return stored;
+    }
+
+    static boolean isCurrent(ItemStack box, FlavorBoxContents expected) {
+        return box.get(FlavorBoxComponents.CONTENTS.get()) == expected;
+    }
+
+    private static int storedCount(ItemStack box) {
+        FlavorBoxContents stored = box.get(FlavorBoxComponents.CONTENTS.get());
+        return stored == null ? Iterables.size(legacyStorage(box).nonEmptyItems()) : stored.size();
     }
 
     public static List<ItemStack> contents(ItemStack box) {
@@ -42,17 +71,12 @@ public final class FlavorBoxItem extends Item {
     }
 
     public static void save(ItemStack box, List<ItemStack> contents) {
-        box.set(FlavorBoxComponents.CONTENTS.get(), new FlavorBoxContents(contents));
-        box.remove(DataComponents.CONTAINER);
+        store(box, new FlavorBoxContents(contents));
     }
 
-    private static boolean hasUntasted(Player player, ItemStack box) {
-        for (ItemStack food : contents(box)) {
-            if (food.getCount() == 1 && FlavorFoodRules.canTaste(player, food)) {
-                return true;
-            }
-        }
-        return false;
+    static void store(ItemStack box, FlavorBoxContents contents) {
+        box.set(FlavorBoxComponents.CONTENTS.get(), contents);
+        box.remove(DataComponents.CONTAINER);
     }
 
     static boolean beginOperation(Player player) {
@@ -85,11 +109,11 @@ public final class FlavorBoxItem extends Item {
                 || !level.isClientSide && ACTIVE_PLAYERS.contains(player.getUUID())) {
             return InteractionResultHolder.fail(box);
         }
-        if (!level.isClientSide && !hasUntasted(player, box)) {
+        if (!level.isClientSide && !storage(box).anyServing(food -> FlavorFoodRules.canTaste(player, food))) {
             player.displayClientMessage(Component.translatable("message.eicore.flavor_box.no_food"), true);
             return InteractionResultHolder.fail(box);
         }
-        if (contents(box).stream().allMatch(ItemStack::isEmpty)) {
+        if (level.isClientSide && storedCount(box) == 0) {
             return InteractionResultHolder.fail(box);
         }
         player.startUsingItem(hand);
@@ -98,58 +122,89 @@ public final class FlavorBoxItem extends Item {
 
     @Override
     public ItemStack finishUsingItem(ItemStack box, Level level, LivingEntity entity) {
-        if (!(entity instanceof ServerPlayer player) || !player.isAlive() || player.isSpectator()
-                || player.getItemInHand(player.getUsedItemHand()) != box
-                || player.containerMenu != player.inventoryMenu
-                || !beginOperation(player)) {
+        if (!(entity instanceof ServerPlayer player)) {
             return box;
         }
+        InteractionHand hand = player.getUsedItemHand();
+        if (!holdingBox(player, level, hand, box) || !beginOperation(player)) {
+            return player.getItemInHand(hand);
+        }
+        int eaten = 0;
+        ItemStack currentFood = ItemStack.EMPTY;
+        String phase = "preparing contents";
         try {
-            List<ItemStack> contents = contents(box);
-            int eaten = 0;
-            for (int slot = 0; slot < contents.size(); slot++) {
-                if (!player.isAlive() || player.getItemInHand(player.getUsedItemHand()) != box
-                        || player.containerMenu != player.inventoryMenu) {
+            FlavorBoxContents snapshot = editableStorage(box);
+            var tasting = snapshot.beginTasting();
+            while (tasting.hasNext() && canContinueTasting(player, level, hand, box, snapshot)) {
+                phase = "checking eligibility";
+                ItemStack food = tasting.serving();
+                currentFood = food;
+                if (food.getCount() != 1 || !FlavorFoodRules.canTaste(player, food)) {
+                    tasting.skip();
+                    continue;
+                }
+                phase = "starting use";
+                int duration = food.getUseDuration(player);
+                if (!canContinueTasting(player, level, hand, box, snapshot)) {
                     break;
                 }
-                ItemStack food = contents.get(slot);
-                if (food.getCount() != 1 || !FlavorFoodRules.canTaste(player, food)) {
+                int started = EventHooks.onItemUseStart(player, food, hand, duration);
+                if (!canContinueTasting(player, level, hand, box, snapshot)) {
+                    break;
+                }
+                if (started <= 0 || food.getCount() != 1 || !FlavorFoodRules.canTaste(player, food)) {
+                    tasting.skip();
                     continue;
                 }
-                if (EventHooks.onItemUseStart(player, food, player.getUsedItemHand(),
-                        food.getUseDuration(player)) <= 0) {
-                    continue;
-                }
-                if (!player.isAlive() || player.getItemInHand(player.getUsedItemHand()) != box
-                        || player.containerMenu != player.inventoryMenu) {
+                if (!canContinueTasting(player, level, hand, box, snapshot)) {
                     break;
                 }
                 ItemStack before = food.copy();
-                contents.set(slot, ItemStack.EMPTY);
-                save(box, contents);
+                currentFood = before;
+                snapshot = tasting.take();
+                store(box, snapshot);
+                phase = "consuming food";
+                ItemStack result;
                 try {
-                    ItemStack result = food.finishUsingItem(level, player);
-                    result = EventHooks.onItemUseFinish(player, before, 0, result);
-                    if (ItemStack.isSameItem(result, before)) {
-                        result.shrink(1);
-                    }
-                    if (!result.isEmpty() && !player.getInventory().add(result)) {
-                        player.drop(result, false);
-                    }
-                    eaten++;
+                    result = food.finishUsingItem(level, player);
                 } catch (RuntimeException exception) {
-                    LogUtils.getLogger().error("Flavor box food consumption failed for {}", before, exception);
-                    player.displayClientMessage(Component.translatable("message.eicore.flavor_box.food_error"), false);
-                    break;
+                    // The item may already have consumed or changed itself. Never recreate the pre-use copy.
+                    player.getInventory().placeItemBackInInventory(food);
+                    throw exception;
+                }
+                eaten++;
+                phase = "finishing use";
+                // Keep access to the last published remainder even if a later Finish listener throws.
+                var finish = new LivingEntityUseItemEvent.Finish(player, before, 0, result);
+                try {
+                    NeoForge.EVENT_BUS.post(finish);
+                } finally {
+                    player.getInventory().placeItemBackInInventory(finish.getResultStack());
                 }
             }
-            player.getInventory().setChanged();
-            player.inventoryMenu.broadcastChanges();
-            player.displayClientMessage(Component.translatable("message.eicore.flavor_box.tasted", eaten), true);
+        } catch (RuntimeException exception) {
+            LogUtils.getLogger().error("Flavor box stopped while {} for {} ({} consumed)", phase, currentFood, eaten, exception);
+            player.displayClientMessage(Component.translatable("message.eicore.flavor_box.food_error"), false);
         } finally {
-            endOperation(player);
+            try {
+                player.getInventory().setChanged();
+                player.inventoryMenu.broadcastChanges();
+            } finally {
+                endOperation(player);
+            }
         }
-        return box;
+        player.displayClientMessage(Component.translatable("message.eicore.flavor_box.tasted", eaten), true);
+        return player.getItemInHand(hand);
+    }
+
+    private static boolean holdingBox(ServerPlayer player, Level level, InteractionHand hand, ItemStack box) {
+        return player.isAlive() && !player.isRemoved() && !player.isSpectator() && player.level() == level
+                && player.getItemInHand(hand) == box && box.getCount() == 1 && player.containerMenu == player.inventoryMenu;
+    }
+
+    private static boolean canContinueTasting(ServerPlayer player, Level level, InteractionHand hand, ItemStack box,
+                                             FlavorBoxContents expected) {
+        return holdingBox(player, level, hand, box) && isCurrent(box, expected);
     }
 
     @Override
@@ -169,8 +224,7 @@ public final class FlavorBoxItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
-        long count = contents(stack).stream().filter(food -> !food.isEmpty()).count();
-        tooltip.add(Component.translatable("tooltip.eicore.flavor_box.contents", count)
+        tooltip.add(Component.translatable("tooltip.eicore.flavor_box.contents", storedCount(stack))
                 .withStyle(ChatFormatting.GOLD));
         tooltip.add(Component.translatable("tooltip.eicore.flavor_box.collect").withStyle(ChatFormatting.GRAY));
         tooltip.add(Component.translatable("tooltip.eicore.flavor_box.taste").withStyle(ChatFormatting.AQUA));

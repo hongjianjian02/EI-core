@@ -3,6 +3,7 @@ package com.mysterious.mystic.foodbox;
 import com.mojang.logging.LogUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.RandomizableContainer;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -10,9 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.IdentityHashMap;
-import java.util.List;
 import java.util.Set;
 
 final class FlavorBoxCollection {
@@ -40,16 +39,26 @@ final class FlavorBoxCollection {
             }
             ACTIVE_CONTAINERS.addAll(source.blocks());
             locked = true;
+            for (BlockEntity block : source.blocks()) {
+                if (block instanceof RandomizableContainer loot && loot.getLootTable() != null) {
+                    if (!validSource(player, box, context, source)) {
+                        return;
+                    }
+                    loot.unpackLootTable(player);
+                }
+            }
+            if (!validSource(player, box, context, source)) {
+                return;
+            }
             IItemHandler handler = source.handler();
-            Set<Item> stored = new HashSet<>();
-            FlavorBoxItem.contents(box).stream().filter(food -> !food.isEmpty()).forEach(food -> stored.add(food.getItem()));
+            FlavorBoxContents snapshot = FlavorBoxItem.editableStorage(box);
+            Set<Item> stored = snapshot.foodTypes();
             int slots = handler.getSlots();
             for (int slot = 0; slot < slots; slot++) {
-                if (!validSource(player, box, context, source) || handler.getSlots() != slots) {
+                if (!validSource(player, box, context, source) || handler.getSlots() != slots
+                        || !FlavorBoxItem.isCurrent(box, snapshot)) {
                     break;
                 }
-                FlavorBoxContents snapshot = FlavorBoxItem.storage(box);
-                List<ItemStack> contents = snapshot.copyItems();
                 ItemStack before = handler.getStackInSlot(slot).copy();
                 if (source.isInfinite().test(slot) || before.getCount() == Integer.MAX_VALUE
                         || stored.contains(before.getItem()) || !FlavorFoodRules.canTaste(player, before)) {
@@ -60,9 +69,8 @@ final class FlavorBoxCollection {
                         || !FlavorFoodRules.canTaste(player, simulated)) {
                     continue;
                 }
-                if (!validSource(player, box, context, source) || source.isInfinite().test(slot)
-                        || !snapshot.equals(FlavorBoxItem.storage(box))
-                        || !ItemStack.matches(before, handler.getStackInSlot(slot))) {
+                if (source.isInfinite().test(slot) || !ItemStack.matches(before, handler.getStackInSlot(slot))
+                        || !validSource(player, box, context, source) || !FlavorBoxItem.isCurrent(box, snapshot)) {
                     break;
                 }
                 try {
@@ -85,14 +93,13 @@ final class FlavorBoxCollection {
                     break;
                 }
                 if (pending.getCount() != 1 || !ItemStack.isSameItemSameComponents(pending, simulated)
-                        || !validSource(player, box, context, source)
-                        || !snapshot.equals(FlavorBoxItem.storage(box))
-                        || stored.contains(pending.getItem()) || !FlavorFoodRules.canTaste(player, pending)) {
+                        || stored.contains(pending.getItem()) || !FlavorFoodRules.canTaste(player, pending)
+                        || !validSource(player, box, context, source) || !FlavorBoxItem.isCurrent(box, snapshot)) {
                     break;
                 }
                 Item foodType = pending.getItem();
-                contents.add(pending.copy());
-                FlavorBoxItem.save(box, contents);
+                snapshot = snapshot.append(pending);
+                FlavorBoxItem.store(box, snapshot);
                 pending = ItemStack.EMPTY;
                 stored.add(foodType);
                 added++;
@@ -104,7 +111,7 @@ final class FlavorBoxCollection {
         } finally {
             try {
                 if (!pending.isEmpty()) {
-                    recover(player, pending);
+                    player.getInventory().placeItemBackInInventory(pending);
                 }
             } finally {
                 if (locked) {
@@ -136,14 +143,7 @@ final class FlavorBoxCollection {
         }
         FlavorBoxContainers.Source current = FlavorBoxContainers.find(player, context.getHand(), context.getClickedPos(), context.getClickedFace());
         return current != null && (!source.stableHandler() || current.handler() == source.handler())
-                && current.blocks().equals(source.blocks());
-    }
-
-    private static void recover(ServerPlayer player, ItemStack extracted) {
-        ItemStack remaining = extracted.copy();
-        if (!remaining.isEmpty() && !player.getInventory().add(remaining)) {
-            player.drop(remaining, false);
-        }
+                && current.blocks().equals(source.blocks()) && ready(player, box, context);
     }
 
     private static void message(ServerPlayer player, String key, Object... arguments) {
