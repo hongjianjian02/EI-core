@@ -2,9 +2,13 @@ package com.mysterious.mystic;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -64,6 +68,11 @@ public class ModItems {
     public static final DeferredItem<DeferredSpawnEggItem> ELECTRIC_EEL_SPAWN_EGG =
             ITEMS.registerItem("electric_eel_spawn_egg", properties ->
                     new DeferredSpawnEggItem(ModEntities.ELECTRIC_EEL, 0x303C25, 0xB6AC66, properties));
+
+    public static final DeferredItem<MobBucketItem> ELECTRIC_EEL_BUCKET =
+            ITEMS.registerItem("electric_eel_bucket", properties ->
+                    new MobBucketItem(ModEntities.ELECTRIC_EEL.get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, properties),
+                    new Item.Properties().stacksTo(1).component(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY));
 
 
     public static final DeferredItem<BlockItem> COMPRESSED_MARBLE_ITEM =

@@ -3,8 +3,11 @@ package com.mysterious.mystic;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -35,6 +38,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.KENGJIN_BLOCK_ITEM.get());
                         output.accept(ModItems.MYSTIC_CROWN.get());
                         output.accept(ModItems.ELECTRIC_EEL_SPAWN_EGG.get());
+                        output.accept(ModItems.ELECTRIC_EEL_BUCKET.get());
                         output.accept(ModItems.BAIWEI_SEEDS.get());
                         output.accept(ModItems.YOUKAI_FEAST_SEEDS.get());
                         output.accept(ModItems.FLAVOR_BOX.get());
@@ -48,5 +52,13 @@ public final class ModCreativeTabs {
 
     public static void register(IEventBus bus) {
         TABS.register(bus);
+        bus.addListener(ModCreativeTabs::addVanillaTabItems);
+    }
+
+    private static void addVanillaTabItems(BuildCreativeModeTabContentsEvent event) {
+        if (event.getTabKey().equals(CreativeModeTabs.TOOLS_AND_UTILITIES)) {
+            event.insertAfter(Items.PUFFERFISH_BUCKET.getDefaultInstance(), ModItems.ELECTRIC_EEL_BUCKET.toStack(),
+                    CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+        }
     }
 }

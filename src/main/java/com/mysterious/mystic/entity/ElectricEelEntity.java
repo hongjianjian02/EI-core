@@ -1,10 +1,14 @@
 package com.mysterious.mystic.entity;
 
+import com.mysterious.mystic.ModItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
@@ -18,7 +22,11 @@ import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
+import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.animal.WaterAnimal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
@@ -29,9 +37,10 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class ElectricEelEntity extends WaterAnimal implements GeoEntity {
+public class ElectricEelEntity extends WaterAnimal implements GeoEntity, Bucketable {
     private static final RawAnimation SWIM = RawAnimation.begin().thenLoop("animation.electric_eel.swim");
     private final AnimatableInstanceCache animationCache = GeckoLibUtil.createInstanceCache(this);
+    private boolean fromBucket;
 
     public ElectricEelEntity(EntityType<? extends ElectricEelEntity> entityType, Level level) {
         super(entityType, level);
@@ -43,6 +52,69 @@ public class ElectricEelEntity extends WaterAnimal implements GeoEntity {
         return WaterAnimal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 12.0)
                 .add(Attributes.MOVEMENT_SPEED, 1.0);
+    }
+
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        if (!player.getItemInHand(hand).is(Items.WATER_BUCKET) || !this.isAlive()) {
+            return super.mobInteract(player, hand);
+        }
+        if (this.level().isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+        return Bucketable.bucketMobPickup(player, hand, this).orElse(InteractionResult.PASS);
+    }
+
+    @Override
+    public ItemStack getBucketItemStack() {
+        return new ItemStack(ModItems.ELECTRIC_EEL_BUCKET.get());
+    }
+
+    @Override
+    public SoundEvent getPickupSound() {
+        return SoundEvents.BUCKET_FILL_FISH;
+    }
+
+    @Override
+    public void saveToBucketTag(ItemStack bucket) {
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
+    }
+
+    @Override
+    public void loadFromBucketTag(CompoundTag tag) {
+        Bucketable.loadDefaultDataFromBucketTag(this, tag);
+    }
+
+    @Override
+    public boolean fromBucket() {
+        return this.fromBucket;
+    }
+
+    @Override
+    public void setFromBucket(boolean fromBucket) {
+        this.fromBucket = fromBucket;
+    }
+
+    @Override
+    public boolean requiresCustomPersistence() {
+        return super.requiresCustomPersistence() || this.fromBucket();
+    }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceSquared) {
+        return !this.fromBucket() && !this.hasCustomName();
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putBoolean("FromBucket", this.fromBucket());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setFromBucket(tag.getBoolean("FromBucket"));
     }
 
     public static boolean checkSpawnRules(EntityType<ElectricEelEntity> entityType, ServerLevelAccessor level,
