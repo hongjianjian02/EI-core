@@ -10,6 +10,7 @@ public class MysteriousMod {
 
     public MysteriousMod(IEventBus modBus) {
         com.mysterious.mystic.foodbox.FlavorBoxComponents.register(modBus);
+        AncientSeedTrowelItem.register(modBus);
         ModBlocks.register(modBus);
         ModWorldgen.register(modBus);
         ModEntities.register(modBus);

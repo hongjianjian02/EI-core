@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "immortalers_delight:alfalfa_seeds", "required": false },
+    { "id": "immortalers_delight:pearlipearl", "required": false },
+    { "id": "immortalers_delight:evolutcorn_grains", "required": false },
+    { "id": "immortalers_delight:himekaido_seed", "required": false },
+    { "id": "immortalers_delight:sextlotus_seeds", "required": false },
+    { "id": "immortalers_delight:contains_tea_leisamboo", "required": false },
+    { "id": "immortalers_delight:kwat_wheat_seeds", "required": false },
+    { "id": "immortalers_delight:warped_laurel_seeds", "required": false },
+    { "id": "immortalers_delight:gelpitaya", "required": false },
+    { "id": "immortalers_delight:a_bush", "required": false },
+    { "id": "immortalers_delight:obsidian_walnut", "required": false },
+    { "id": "immortalers_delight:travarice", "required": false }
+  ]
+}

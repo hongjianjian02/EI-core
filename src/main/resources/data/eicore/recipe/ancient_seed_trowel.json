@@ -1,0 +1,17 @@
+{
+  "neoforge:conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "immortalers_delight" }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": ["F", "S", "B"],
+  "key": {
+    "F": { "item": "minecraft:torchflower" },
+    "S": { "item": "minecraft:iron_shovel" },
+    "B": { "item": "minecraft:brush" }
+  },
+  "result": {
+    "id": "eicore:ancient_seed_trowel",
+    "count": 1
+  }
+}

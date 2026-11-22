@@ -1,5 +1,6 @@
 package com.mysterious.mystic.foodbox;
 
+import com.mysterious.mystic.BlockInteractionAccess;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -29,10 +30,7 @@ final class FlavorBoxContainers {
     }
 
     static boolean permitted(ServerPlayer player, InteractionHand hand, BlockPos pos) {
-        if (!player.serverLevel().mayInteract(player, pos) || !player.canInteractWithBlock(pos, 0)) {
-            return false;
-        }
-        return !ModList.get().isLoaded("ftbchunks") || Claims.permitted(player, hand, pos);
+        return BlockInteractionAccess.permitted(player, hand, pos);
     }
 
     static Source find(ServerPlayer player, InteractionHand hand, BlockPos pos, Direction side) {
@@ -76,14 +74,6 @@ final class FlavorBoxContainers {
         }
         IItemHandler handler = player.serverLevel().getCapability(Capabilities.ItemHandler.BLOCK, pos, side);
         return handler == null ? null : new Source(handler, List.copyOf(blocks), slot -> false, false);
-    }
-
-    private static final class Claims {
-        static boolean permitted(ServerPlayer player, InteractionHand hand, BlockPos pos) {
-            var api = dev.ftb.mods.ftbchunks.api.FTBChunksAPI.api();
-            return api != null && api.isManagerLoaded() && !api.getManager().shouldPreventInteraction(
-                    player, hand, pos, dev.ftb.mods.ftbchunks.api.Protection.INTERACT_BLOCK, null);
-        }
     }
 
     private static final class Sophisticated {

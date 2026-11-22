@@ -35,6 +35,9 @@ public class ModItems {
             ITEMS.registerItem("immortal_feast_seeds", properties ->
                     new ItemNameBlockItem(ModBlocks.IMMORTAL_FEAST_CROP.get(), properties));
 
+    public static final DeferredItem<AncientSeedTrowelItem> ANCIENT_SEED_TROWEL =
+            ITEMS.registerItem("ancient_seed_trowel", AncientSeedTrowelItem::new, new Item.Properties().durability(64));
+
     public static final DeferredItem<Item> MYSTIC_CROWN =
             ITEMS.registerItem("mystic_crown", Item::new, new Item.Properties().stacksTo(1));
 
