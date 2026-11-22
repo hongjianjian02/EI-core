@@ -31,6 +31,10 @@ public class ModItems {
             ITEMS.registerItem("youkai_feast_seeds", properties ->
                     new ItemNameBlockItem(ModBlocks.YOUKAI_FEAST_CROP.get(), properties));
 
+    public static final DeferredItem<ItemNameBlockItem> IMMORTAL_FEAST_SEEDS =
+            ITEMS.registerItem("immortal_feast_seeds", properties ->
+                    new ItemNameBlockItem(ModBlocks.IMMORTAL_FEAST_CROP.get(), properties));
+
     public static final DeferredItem<Item> MYSTIC_CROWN =
             ITEMS.registerItem("mystic_crown", Item::new, new Item.Properties().stacksTo(1));
 

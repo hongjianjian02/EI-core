@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "eicore:immortal_feast_seeds" }
+      ],
+      "conditions": [
+        { "condition": "minecraft:survives_explosion" }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:tag", "name": "eicore:immortal_feast_foods", "expand": true }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "eicore:immortal_feast_crop",
+          "properties": { "age": "7" }
+        },
+        { "condition": "minecraft:survives_explosion" }
+      ]
+    }
+  ],
+  "random_sequence": "eicore:blocks/immortal_feast_crop"
+}

@@ -11,7 +11,11 @@
     "DraconicAdditionsEnergyCapabilityMixin",
     "CropBonemealFlowerMixin",
     "MunchdewLeafParticleMixin",
-    "ForestWandBindingPriorityMixin"
+    "ForestWandBindingPriorityMixin",
+    "ImmortalersDelightReverseTickMixin",
+    "ImmortalersDelightReverseOnApplyMixin",
+    "ImmortalersDelightAntidoteMixin",
+    "CirnoIceCubeTradeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

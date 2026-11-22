@@ -3,7 +3,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
-version = '1.0.5'
+version = '1.0.9'
 group = 'com.mysterious'
 
 base {

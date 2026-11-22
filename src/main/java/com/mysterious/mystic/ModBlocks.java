@@ -21,6 +21,10 @@ public final class ModBlocks {
             BLOCKS.register("youkai_feast_crop", () -> new YoukaiFeastCropBlock(
                     BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
 
+    public static final DeferredBlock<ImmortalFeastCropBlock> IMMORTAL_FEAST_CROP =
+            BLOCKS.register("immortal_feast_crop", () -> new ImmortalFeastCropBlock(
+                    BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT)));
+
     public static final DeferredBlock<Block> COMPRESSED_MARBLE =
             BLOCKS.register("compressed_marble", () -> new Block(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.QUARTZ)
