@@ -1,5 +1,6 @@
 package com.mysterious.mystic;
 
+import com.mysterious.mystic.scribe.RitualScribeItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -38,6 +39,9 @@ public class ModItems {
     public static final DeferredItem<AncientSeedTrowelItem> ANCIENT_SEED_TROWEL =
             ITEMS.registerItem("ancient_seed_trowel", AncientSeedTrowelItem::new, new Item.Properties().durability(64));
 
+    public static final DeferredItem<RitualScribeItem> RITUAL_SCRIBE_TOOL =
+            ITEMS.registerItem("ritual_scribe_tool", RitualScribeItem::new, new Item.Properties().stacksTo(1));
+
     public static final DeferredItem<Item> MYSTIC_CROWN =
             ITEMS.registerItem("mystic_crown", Item::new, new Item.Properties().stacksTo(1));
 
@@ -51,7 +55,10 @@ public class ModItems {
             ITEMS.registerItem("tianshu_star", Item::new, new Item.Properties());
 
     public static final DeferredItem<Item> STAR_RING =
-            ITEMS.registerItem("star_ring", Item::new, new Item.Properties());
+            ITEMS.registerItem("star_ring", StarRingItem::new, new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<Item> STARLIGHT_RESONANCE_LENS =
+            ITEMS.registerItem("starlight_resonance_lens", Item::new, new Item.Properties().stacksTo(64));
 
     public static final DeferredItem<Item> MITHRIL_INGOT =
             ITEMS.registerItem("mithril_ingot", Item::new, new Item.Properties());

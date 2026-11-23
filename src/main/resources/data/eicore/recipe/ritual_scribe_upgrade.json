@@ -1,0 +1,5 @@
+{
+  "neoforge:conditions": [{ "type": "neoforge:mod_loaded", "modid": "neovitae" }],
+  "type": "eicore:ritual_scribe_upgrade",
+  "category": "equipment"
+}
