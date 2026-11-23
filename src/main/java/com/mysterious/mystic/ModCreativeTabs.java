@@ -24,6 +24,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.ACTIVATED_RUNE_GEM.get());
                         output.accept(ModItems.TIANSHU_STAR.get());
                         output.accept(ModItems.STAR_RING.get());
+                        output.accept(ModItems.STARLIGHT_RESONANCE_LENS.get());
                         output.accept(ModItems.MITHRIL_INGOT.get());
                         output.accept(ModItems.KENGJIN_INGOT.get());
                         output.accept(ModItems.TIANGANG_INGOT.get());
@@ -43,6 +44,7 @@ public final class ModCreativeTabs {
                         output.accept(ModItems.YOUKAI_FEAST_SEEDS.get());
                         output.accept(ModItems.IMMORTAL_FEAST_SEEDS.get());
                         output.accept(ModItems.ANCIENT_SEED_TROWEL.get());
+                        output.accept(ModItems.RITUAL_SCRIBE_TOOL.get());
                         output.accept(ModItems.FLAVOR_BOX.get());
                         com.mysterious.mystic.flower.ModFlowers.ITEMS_BY_KIND.values()
                                 .forEach(item -> output.accept(item.get()));

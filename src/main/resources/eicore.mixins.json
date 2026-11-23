@@ -15,7 +15,9 @@
     "ImmortalersDelightReverseTickMixin",
     "ImmortalersDelightReverseOnApplyMixin",
     "ImmortalersDelightAntidoteMixin",
-    "CirnoIceCubeTradeMixin"
+    "CirnoIceCubeTradeMixin",
+    "L2TabsCuriosBackendMixin",
+    "PlayerStarRingMixin"
   ],
   "injectors": {
     "defaultRequire": 1
