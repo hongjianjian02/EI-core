@@ -43,3 +43,7 @@ Thumbs.db
 !/AGENTS.md
 /docs
 *.md
+/artwork
+/libs
+libs/emi.jar
+libs/neovitae.jar
