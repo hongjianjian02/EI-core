@@ -3,7 +3,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
-version = '1.0.25'
+version = '1.0.31'
 group = 'com.mysterious'
 
 base {
@@ -38,6 +38,8 @@ repositories {
 }
 
 dependencies {
+    compileOnly files('libs/astages.jar')
+    compileOnly files('libs/jei.jar')
     compileOnly files('libs/curios.jar')
     compileOnly files('libs/twilightforest.jar') 
     compileOnly files('libs/draconicevolution.jar')

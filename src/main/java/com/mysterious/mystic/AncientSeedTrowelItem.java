@@ -3,7 +3,6 @@ package com.mysterious.mystic;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
@@ -27,12 +26,11 @@ import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
@@ -43,7 +41,6 @@ import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
-import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
@@ -53,16 +50,19 @@ import java.util.function.Supplier;
 
 final class AncientSeedTrowelItem extends Item {
     private static final int DIG_TICKS = 40;
-    private static final int BASE_COOLDOWN_SECONDS = 10;
-    private static final int COOLDOWN_SECONDS_PER_EFFICIENCY_LEVEL = 1;
-    private static final int MAX_COOLDOWN_EFFICIENCY_LEVEL = 5;
-    private static final int MILLIS_PER_TICK = 50;
+    // Calibrated to the pack's current loot tables and mininProbability = 0.5.
+    private static final double SINGLE_BIOME_EMPTY_DIG_CHANCE = 0.4424691894634759;
+    private static final double TARGET_SINGLE_BIOME_EMPTY_DIG_CHANCE = 0.2225;
+    private static final double EMPTY_DIG_RETRY_CHANCE =
+            (SINGLE_BIOME_EMPTY_DIG_CHANCE - TARGET_SINGLE_BIOME_EMPTY_DIG_CHANCE)
+                    / (SINGLE_BIOME_EMPTY_DIG_CHANCE * (1 - SINGLE_BIOME_EMPTY_DIG_CHANCE));
     private static final String MESSAGE = "item.eicore.ancient_seed_trowel.";
     private static final TagKey<Item> FINDS = TagKey.create(Registries.ITEM,
             ResourceLocation.fromNamespaceAndPath(MysteriousMod.MODID, "ancient_seed_trowel_finds"));
     private static final DeferredRegister<AttachmentType<?>> ATTACHMENTS =
             DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, MysteriousMod.MODID);
-    private static final Supplier<AttachmentType<Long>> READY_AT = ATTACHMENTS.register("trowel_ready_at",
+    // Keep the serialized attachment registered so old player saves can load and discard their cooldown.
+    private static final Supplier<AttachmentType<Long>> LEGACY_READY_AT = ATTACHMENTS.register("trowel_ready_at",
             () -> AttachmentType.builder(() -> 0L).serialize(Codec.LONG).copyOnDeath().build());
     private static final Supplier<AttachmentType<Optional<Dig>>> ACTIVE_DIG = ATTACHMENTS.register("trowel_active_dig",
             () -> AttachmentType.builder(() -> Optional.<Dig>empty()).build());
@@ -73,10 +73,9 @@ final class AncientSeedTrowelItem extends Item {
 
     static void register(IEventBus bus) {
         ATTACHMENTS.register(bus);
-        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> restoreCooldown(event.getEntity()));
-        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerRespawnEvent event) -> restoreCooldown(event.getEntity()));
-        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerChangedDimensionEvent event) -> restoreCooldown(event.getEntity()));
-        NeoForge.EVENT_BUS.addListener(AncientSeedTrowelItem::clearExpiredCooldown);
+        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent event) -> clearLegacyCooldown(event.getEntity()));
+        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerRespawnEvent event) -> clearLegacyCooldown(event.getEntity()));
+        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerChangedDimensionEvent event) -> clearLegacyCooldown(event.getEntity()));
     }
 
     @Override
@@ -89,13 +88,6 @@ final class AncientSeedTrowelItem extends Item {
         }
         if (!ModList.get().isLoaded("immortalers_delight")) {
             return reject(player, "unavailable");
-        }
-        long remainingMillis = remainingCooldownMillis(player);
-        if (remainingMillis > 0) {
-            if (!player.getCooldowns().isOnCooldown(this)) {
-                showCooldown(player, remainingMillis);
-            }
-            return reject(player, "cooldown", (remainingMillis + 999) / 1000);
         }
 
         ServerLevel level = player.serverLevel();
@@ -148,21 +140,11 @@ final class AncientSeedTrowelItem extends Item {
         if (dig == null || !dig.valid(player, stack) || level.getGameTime() - dig.startedAt < DIG_TICKS - 1) {
             return stack;
         }
-        long now = System.currentTimeMillis();
-        if (player.getData(READY_AT) > now) {
-            return stack;
-        }
         if (!permitted(player, dig.hand, dig.pos, dig.face, stack)) {
             reject(player, "protected");
             return stack;
         }
 
-        var efficiency = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.EFFICIENCY);
-        int efficiencyLevel = Math.clamp(stack.getEnchantmentLevel(efficiency), 0, MAX_COOLDOWN_EFFICIENCY_LEVEL);
-        int cooldownSeconds = BASE_COOLDOWN_SECONDS - efficiencyLevel * COOLDOWN_SECONDS_PER_EFFICIENCY_LEVEL;
-        long cooldownMillis = cooldownSeconds * 1000L;
-        player.setData(READY_AT, now + cooldownMillis);
-        showCooldown(player, remainingCooldownMillis(player));
         player.awardStat(Stats.ITEM_USED.get(this));
         EquipmentSlot slot = dig.hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
         stack.hurtAndBreak(1, player, slot);
@@ -171,11 +153,12 @@ final class AncientSeedTrowelItem extends Item {
                 .withParameter(LootContextParams.THIS_ENTITY, player)
                 .create(LootContextParamSets.GIFT);
         var table = dig.level.getServer().reloadableRegistries().getLootTable(BuiltInLootTables.SNIFFER_DIGGING);
+        List<ItemStack> finds = rollFinds(table, params);
+        if (finds.isEmpty() && player.getRandom().nextDouble() < EMPTY_DIG_RETRY_CHANCE) {
+            finds = rollFinds(table, params);
+        }
         int found = 0;
-        for (ItemStack drop : table.getRandomItems(params)) {
-            if (drop.isEmpty() || !drop.is(FINDS)) {
-                continue;
-            }
+        for (ItemStack drop : finds) {
             var item = new ItemEntity(dig.level, dig.pos.getX() + 0.5, dig.pos.getY() + 1.05,
                     dig.pos.getZ() + 0.5, drop);
             item.setDefaultPickUpDelay();
@@ -189,6 +172,12 @@ final class AncientSeedTrowelItem extends Item {
             player.displayClientMessage(Component.translatable(MESSAGE + "found", found), true);
         }
         return stack;
+    }
+
+    private static List<ItemStack> rollFinds(LootTable table, LootParams params) {
+        return table.getRandomItems(params).stream()
+                .filter(drop -> !drop.isEmpty() && drop.is(FINDS))
+                .toList();
     }
 
     @Override
@@ -214,40 +203,15 @@ final class AncientSeedTrowelItem extends Item {
     }
 
     @Override
-    public boolean supportsEnchantment(ItemStack stack, Holder<Enchantment> enchantment) {
-        return enchantment.is(Enchantments.EFFICIENCY) || super.supportsEnchantment(stack, enchantment);
-    }
-
-    @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flag) {
         tooltip.add(Component.translatable(MESSAGE + "tooltip"));
-        tooltip.add(Component.translatable(MESSAGE + "tooltip_cooldown",
-                BASE_COOLDOWN_SECONDS, COOLDOWN_SECONDS_PER_EFFICIENCY_LEVEL, MAX_COOLDOWN_EFFICIENCY_LEVEL));
+        tooltip.add(Component.translatable(MESSAGE + "tooltip_durability"));
     }
 
-    private static long remainingCooldownMillis(ServerPlayer player) {
-        return player.getExistingData(READY_AT).orElse(0L) - System.currentTimeMillis();
-    }
-
-    private static void showCooldown(ServerPlayer player, long remainingMillis) {
-        if (remainingMillis > 0) {
-            player.getCooldowns().addCooldown(ModItems.ANCIENT_SEED_TROWEL.get(),
-                    (int) Math.ceilDiv(remainingMillis, MILLIS_PER_TICK));
-        }
-    }
-
-    private static void restoreCooldown(Player player) {
+    private static void clearLegacyCooldown(Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
-            showCooldown(serverPlayer, remainingCooldownMillis(serverPlayer));
-        }
-    }
-
-    private static void clearExpiredCooldown(PlayerTickEvent.Post event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            Item trowel = ModItems.ANCIENT_SEED_TROWEL.get();
-            if (player.getCooldowns().isOnCooldown(trowel) && remainingCooldownMillis(player) <= 0) {
-                player.getCooldowns().removeCooldown(trowel);
-            }
+            serverPlayer.removeData(LEGACY_READY_AT);
+            serverPlayer.getCooldowns().removeCooldown(ModItems.ANCIENT_SEED_TROWEL.get());
         }
     }
 

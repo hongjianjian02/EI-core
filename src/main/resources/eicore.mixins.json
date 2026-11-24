@@ -23,6 +23,13 @@
     "defaultRequire": 1
   },
   "client": [
-    "NuclearcraftEmiFluidIdMixin"
+    "NuclearcraftEmiFluidIdMixin",
+    "AStagesJeiRecipeVisibilityMixin",
+    "AStagesEmiRecipeVisibilityMixin",
+    "JeiRecipeStageTooltipMixin",
+    "EmiRecipeStageTooltipMixin",
+    "EmiRecipeStageBadgeMixin",
+    "EmiSidebarStageBadgeMixin",
+    "EmiSidebarStageTooltipMixin"
   ]
 }

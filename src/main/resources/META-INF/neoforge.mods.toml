@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "eicore"
-version = "1.0.25"
+version = "1.0.31"
 displayName = "EI core"
 authors = "JianJian_"
 description = '''EI core - Entropy-Increase core mod'''
@@ -142,5 +142,19 @@ side = "BOTH"
 modId = "neovitae"
 type = "optional"
 versionRange = "[1.1.51,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "astages"
+type = "required"
+versionRange = "[2.5.3-1.21.1,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "hardcoreastagesitem"
+type = "required"
+versionRange = "[1.2.1-1.21.1,)"
 ordering = "AFTER"
 side = "BOTH"
