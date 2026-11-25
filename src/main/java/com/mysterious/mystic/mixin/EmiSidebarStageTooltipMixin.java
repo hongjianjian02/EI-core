@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.At;
 @Pseudo
 @Mixin(targets = "dev.emi.emi.screen.EmiScreenManager", remap = false)
 public abstract class EmiSidebarStageTooltipMixin {
-    @WrapOperation(method = "renderCurrentTooltip", at = @At(value = "INVOKE",
+    @WrapOperation(method = "renderCurrentTooltip(Ldev/emi/emi/runtime/EmiDrawContext;IIFLdev/emi/emi/screen/EmiScreenBase;)V",
+            at = @At(value = "INVOKE",
             target = "Ldev/emi/emi/api/stack/EmiIngredient;getTooltip()Ljava/util/List;"))
     private static List<ClientTooltipComponent> eicore$addStageHints(EmiIngredient ingredient,
             Operation<List<ClientTooltipComponent>> original) {

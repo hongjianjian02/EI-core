@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(targets = "dev.emi.emi.api.widget.SlotWidget", remap = false)
 public abstract class EmiRecipeStageTooltipMixin {
     // Both native EMI slots and JEMI output slots call this when their tooltip is built.
-    @Inject(method = "addSlotTooltip", at = @At("TAIL"))
+    @Inject(method = "addSlotTooltip(Ljava/util/List;)V", at = @At("TAIL"))
     private void eicore$appendRecipeStages(List<ClientTooltipComponent> tooltip, CallbackInfo callback) {
         for (var hint : EmiStageIndicators.resultHints((SlotWidget) (Object) this)) {
             tooltip.add(EmiStageIndicators.tooltipComponent(hint));
