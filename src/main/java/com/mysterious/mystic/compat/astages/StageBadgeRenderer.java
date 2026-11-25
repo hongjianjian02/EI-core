@@ -14,17 +14,18 @@ public final class StageBadgeRenderer {
     }
 
     public static void draw(GuiGraphics graphics, int iconX, int iconY) {
-        // EMI's batch renderer may leave blending disabled; preserve the caller's state.
+        // Commit queued icons before this immediate overlay. Tooltips render afterwards;
+        // the badge must not leave depth that can hide their background or text.
         var renderState = new GlStateBackup();
         RenderSystem.backupGlState(renderState);
-        graphics.pose().pushPose();
         try {
+            graphics.flush();
             RenderSystem.enableBlend();
             RenderSystem.defaultBlendFunc();
-            graphics.pose().translate(0, 0, 300);
+            RenderSystem.disableDepthTest();
+            RenderSystem.depthMask(false);
             graphics.blit(UNKNOWN_ITEM_TEXTURE, iconX + 7, iconY, 9, 9, 0, 0, 16, 16, 16, 16);
         } finally {
-            graphics.pose().popPose();
             RenderSystem.restoreGlState(renderState);
         }
     }

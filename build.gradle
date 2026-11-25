@@ -3,7 +3,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
-version = '1.0.32'
+version = '1.0.36'
 group = 'com.mysterious'
 
 base {
@@ -48,6 +48,7 @@ dependencies {
     compileOnly files('libs/botania.jar', 'libs/ftbquests.jar', 'libs/ftblibrary.jar', 'libs/ftbteams.jar', 'libs/architectury.jar')
     compileOnly files('libs/jade.jar')
     compileOnly files('libs/neovitae.jar', 'libs/emi.jar')
+    compileOnly files('libs/lootr.jar')
     compileOnly files('libs/solcarrot.jar', 'libs/solapplepie.jar')
     compileOnly files('libs/sophisticatedcore.jar', 'libs/sophisticatedbackpacks.jar', 'libs/sophisticatedstorage.jar', 'libs/ftbchunks.jar')
 }

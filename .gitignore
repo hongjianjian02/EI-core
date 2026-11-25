@@ -47,5 +47,8 @@ Thumbs.db
 *.md
 /artwork
 /libs
+/output/mod-analysis/
+!/SPIRIT_CACHE_LOOTR.md
+!/validation/spirit-cache-tests/README.md
 libs/emi.jar
 libs/neovitae.jar

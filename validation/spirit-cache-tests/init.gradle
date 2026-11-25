@@ -1,0 +1,42 @@
+allprojects { p ->
+    afterEvaluate {
+        sourceSets {
+            spiritCacheTest {
+                java.srcDirs = [file('validation/spirit-cache-tests/java'), file('src/main/java')]
+                java.include 'test/**', 'com/mysterious/mystic/compat/lootr/**', 'com/mysterious/mystic/mixin/SpiritCacheLootr*'
+                resources.srcDirs = [file('validation/spirit-cache-tests/resources')]
+            }
+        }
+        configurations.spiritCacheTestImplementation.extendsFrom(configurations.implementation)
+        sourceSets.spiritCacheTest.compileClasspath += sourceSets.main.compileClasspath
+        sourceSets.spiritCacheTest.runtimeClasspath += configurations.runtimeClasspath
+        dependencies {
+            spiritCacheTestRuntimeOnly files('libs/lootr.jar', 'libs/neovitae.jar')
+            spiritCacheTestRuntimeOnly fileTree('D:/PrismLauncher/instances/Entropy-Increase-1.0.0-build-fc4b9a5/minecraft/mods') {
+                include 'modonomicon-*.jar', 'curios-*.jar', 'smartbrainlib-*.jar'
+            }
+        }
+        neoForge {
+            mods {
+                spiritCacheTest { sourceSet sourceSets.spiritCacheTest }
+            }
+            runs {
+                spiritCacheTest {
+                    server()
+                    sourceSet = sourceSets.spiritCacheTest
+                    loadedMods = [mods.spiritCacheTest]
+                    gameDirectory = file('run/spirit-cache-test')
+                    systemProperty 'neoforge.gameTestServer', 'true'
+                    systemProperty 'neoforge.enabledGameTestNamespaces', 'neoforge'
+                    systemProperty 'eicore.restartStage', providers.gradleProperty('restartStage').getOrElse('seed')
+                    programArgument '--nogui'
+                }
+            }
+        }
+        tasks.named('processSpiritCacheTestResources') {
+            from('src/main/resources') {
+                include 'eicore.lootr-neovitae.mixins.json', 'META-INF/services/**'
+            }
+        }
+    }
+}

@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "eicore"
-version = "1.0.32"
+version = "1.0.36"
 displayName = "EI core"
 authors = "JianJian_"
 description = '''EI core - Entropy-Increase core mod'''
@@ -32,6 +32,10 @@ side = "BOTH"
 
 [[mixins]]
 config = "eicore.mixins.json"
+
+[[mixins]]
+config = "eicore.lootr-neovitae.mixins.json"
+requiredMods = ["lootr", "neovitae"]
 
 [[dependencies.eicore]]
 modId = "draconicevolution"
@@ -142,6 +146,13 @@ side = "BOTH"
 modId = "neovitae"
 type = "optional"
 versionRange = "[1.1.51,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.eicore]]
+modId = "lootr"
+type = "optional"
+versionRange = "[1.21.1-1.11.38.127,1.21.2)"
 ordering = "AFTER"
 side = "BOTH"
 

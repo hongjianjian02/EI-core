@@ -1,0 +1,13 @@
+{
+  "version": "1.0.36",
+  "sha256": "fbae99d20087cb1513f356a272bbd2eb091f74f918f132f348f046f8478a78c9",
+  "index_sha256": "6ade8a6b2fa99eabe62db3ab3e89f8c3c3e6f5bac818589635ef6c5a0c3bd8cd",
+  "backups": [
+    "D:\\github\\mod\\jian\\Entropy-Increase\\codex-sync-backups\\20261126-013334-spirit-cache-lootr",
+    "D:\\PrismLauncher\\instances\\Entropy-Increase-1.0.0-build-fc4b9a5\\codex-sync-backups\\20261126-013334-spirit-cache-lootr"
+  ],
+  "targets": [
+    "D:\\github\\mod\\jian\\Entropy-Increase\\minecraft\\mods\\EI core-1.0.36.jar",
+    "D:\\PrismLauncher\\instances\\Entropy-Increase-1.0.0-build-fc4b9a5\\minecraft\\mods\\EI core-1.0.36.jar"
+  ]
+}
