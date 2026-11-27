@@ -1,0 +1,15 @@
+EI core anvil query integration
+Source: https://github.com/hongjianjian02/jei-recipe-refactoring
+Adopted revision: fc6460a465971fe7fec70aae28364f5c6db9a93e
+Source src tree: 886b21ebfebd9a7d05e112eba3865173a7171179
+Copyright (c) 2026 hong jianjian
+License at adopted revision: MIT; see licenses/jei-recipe-refactoring-MIT.txt.
+
+The upstream successor d3cc5bc4de62133d1edb91811f172ff69b976ba2 changes
+LICENSE to GPLv3, but has the identical src tree. This integration adopts
+the earlier MIT revision; it does not assert that the later license file
+is invalid or that upstream has resolved its mixed license declarations.
+
+Adaptations: EI core package/resource identity, integration with existing
+stage hints, precise JEI replacement, regression and loading validation.
+The original mod is neither bundled nor required.

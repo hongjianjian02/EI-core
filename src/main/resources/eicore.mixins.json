@@ -28,9 +28,6 @@
     "AStagesEmiRecipeVisibilityMixin",
     "JeiRecipeStageTooltipMixin",
     "EmiRecipeStageTooltipMixin",
-    "EmiRecipeStageBadgeMixin",
-    "EmiSidebarStageBadgeMixin",
-    "EmiSidebarStageTooltipMixin",
-    "HardcoreAStagesItemModelMixin"
+    "EmiSidebarStageTooltipMixin"
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "build.gradle": "13fcda9f06b91ecd887a4bbaad08ef857487dd7fc0da38456e4623d41f5c73fa",
+  "src/main/java/com/mysterious/mystic/compat/astages/ClientItemStageBadges.java": null,
+  "src/main/java/com/mysterious/mystic/compat/astages/EmiStageIndicators.java": "2b1c246d284855db1398e07bfe3ee9b8595222145819bda88d8f02b7f4a8c7e8",
+  "src/main/java/com/mysterious/mystic/compat/astages/StageBadgeRenderer.java": null,
+  "src/main/java/com/mysterious/mystic/mixin/EmiRecipeStageBadgeMixin.java": null,
+  "src/main/java/com/mysterious/mystic/mixin/EmiSidebarStageBadgeMixin.java": null,
+  "src/main/java/com/mysterious/mystic/mixin/HardcoreAStagesItemModelMixin.java": null,
+  "src/main/resources/META-INF/neoforge.mods.toml": "2ede2a3795720eacfc279b1c4bcef1dbbd9b3ffaf3b5ae2b65cd1c810fce123c",
+  "src/main/resources/eicore.mixins.json": "b6c5bcc76adbdc9d125433cbef3a5147e12f6ed252cc3a94647349af2fb5c012",
+  "src/test/": null
+}

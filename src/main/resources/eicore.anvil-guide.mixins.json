@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.mysterious.mystic.compat.anvilguide.mixin",
+  "plugin": "com.mysterious.mystic.compat.anvilguide.mixin.EmiOptionalMixinPlugin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "EmiRecipeManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

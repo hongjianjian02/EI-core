@@ -1,0 +1,10 @@
+ M build.gradle
+ D src/main/java/com/mysterious/mystic/compat/astages/ClientItemStageBadges.java
+ M src/main/java/com/mysterious/mystic/compat/astages/EmiStageIndicators.java
+ D src/main/java/com/mysterious/mystic/compat/astages/StageBadgeRenderer.java
+ D src/main/java/com/mysterious/mystic/mixin/EmiRecipeStageBadgeMixin.java
+ D src/main/java/com/mysterious/mystic/mixin/EmiSidebarStageBadgeMixin.java
+ D src/main/java/com/mysterious/mystic/mixin/HardcoreAStagesItemModelMixin.java
+ M src/main/resources/META-INF/neoforge.mods.toml
+ M src/main/resources/eicore.mixins.json
+?? src/test/

@@ -1,0 +1,333 @@
+diff --git a/build.gradle b/build.gradle
+index ecbf38f..3b0e7c8 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -3,7 +3,7 @@ plugins {
+     id 'net.neoforged.moddev'
+ }
+ 
+-version = '1.0.36'
++version = '1.0.37'
+ group = 'com.mysterious'
+ 
+ base {
+diff --git a/src/main/java/com/mysterious/mystic/compat/astages/ClientItemStageBadges.java b/src/main/java/com/mysterious/mystic/compat/astages/ClientItemStageBadges.java
+deleted file mode 100644
+index fc83e46..0000000
+--- a/src/main/java/com/mysterious/mystic/compat/astages/ClientItemStageBadges.java
++++ /dev/null
+@@ -1,27 +0,0 @@
+-package com.mysterious.mystic.compat.astages;
+-
+-import com.mysterious.mystic.MysteriousMod;
+-import net.minecraft.core.registries.BuiltInRegistries;
+-import net.neoforged.api.distmarker.Dist;
+-import net.neoforged.bus.api.SubscribeEvent;
+-import net.neoforged.fml.common.EventBusSubscriber;
+-import net.neoforged.neoforge.client.IItemDecorator;
+-import net.neoforged.neoforge.client.event.RegisterItemDecorationsEvent;
+-
+-@EventBusSubscriber(modid = MysteriousMod.MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+-public final class ClientItemStageBadges {
+-    private static final IItemDecorator BADGE = (graphics, font, stack, x, y) -> {
+-        if (!StageBadgeRenderer.itemBadgesSuppressed() && ClientRecipeStageTooltips.isItemLocked(stack)) {
+-            StageBadgeRenderer.draw(graphics, x, y);
+-        }
+-        return false;
+-    };
+-
+-    private ClientItemStageBadges() {
+-    }
+-
+-    @SubscribeEvent
+-    public static void onRegisterItemDecorations(RegisterItemDecorationsEvent event) {
+-        BuiltInRegistries.ITEM.forEach(item -> event.register(item, BADGE));
+-    }
+-}
+diff --git a/src/main/java/com/mysterious/mystic/compat/astages/EmiStageIndicators.java b/src/main/java/com/mysterious/mystic/compat/astages/EmiStageIndicators.java
+index 30535db..89e9b4a 100644
+--- a/src/main/java/com/mysterious/mystic/compat/astages/EmiStageIndicators.java
++++ b/src/main/java/com/mysterious/mystic/compat/astages/EmiStageIndicators.java
+@@ -11,7 +11,6 @@ import dev.emi.emi.runtime.EmiTagKey;
+ import java.util.LinkedHashSet;
+ import java.util.List;
+ import java.util.Set;
+-import net.minecraft.client.gui.GuiGraphics;
+ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
+ import net.minecraft.network.chat.Component;
+ 
+@@ -20,75 +19,59 @@ public final class EmiStageIndicators {
+     }
+ 
+     public static List<Component> itemHints(EmiIngredient ingredient) {
+-        return List.copyOf(indicator(ingredient, true).hints());
++        return List.copyOf(indicator(ingredient).hints());
+     }
+ 
+     public static Set<Component> resultHints(SlotWidget slot) {
+-        return indicator(slot.getStack(), true).withRecipe(slot.getRecipe(), true).hints();
+-    }
+-
+-    public static void drawItemBadge(GuiGraphics graphics, EmiIngredient ingredient, int iconX, int iconY) {
+-        if (indicator(ingredient, false).locked()) StageBadgeRenderer.draw(graphics, iconX, iconY);
+-    }
+-
+-    public static void drawResultBadge(GuiGraphics graphics, SlotWidget slot) {
+-        if (!indicator(slot.getStack(), false).withRecipe(slot.getRecipe(), false).locked()) return;
+-        var bounds = slot.getBounds();
+-        int iconX = bounds.x() + (bounds.width() - 16) / 2;
+-        int iconY = bounds.y() + (bounds.height() - 16) / 2;
+-        StageBadgeRenderer.draw(graphics, iconX, iconY);
++        return indicator(slot.getStack()).withRecipe(slot.getRecipe()).hints();
+     }
+ 
+     public static ClientTooltipComponent tooltipComponent(Component hint) {
+         return ClientTooltipComponent.create(hint.getVisualOrderText());
+     }
+ 
+-    private static Indicator indicator(EmiIngredient ingredient, boolean includeHints) {
++    private static Indicator indicator(EmiIngredient ingredient) {
+         if (ingredient == null || ingredient.isEmpty()) return Indicator.NONE;
+         if (ingredient instanceof EmiFavorite favorite) {
+-            return indicator(favorite.getStack(), includeHints).withRecipe(favorite.getRecipe(), includeHints);
++            return indicator(favorite.getStack()).withRecipe(favorite.getRecipe());
+         }
+         if (ingredient instanceof ListEmiIngredient list) {
+             var candidates = list.getIngredients();
+             if (candidates.isEmpty()) return Indicator.NONE;
+             // EMI cycles top-level ingredients, which may themselves be tags or lists.
+             int index = (int) ((System.currentTimeMillis() / 1000) % candidates.size());
+-            return indicator(candidates.get(index), includeHints);
++            return indicator(candidates.get(index));
+         }
+         if (ingredient instanceof TagEmiIngredient tag && EmiTagKey.of(tag.key).hasCustomModel()) {
+             // A custom tag model represents the whole tag rather than one displayed item.
+-            // Only mark it if every candidate is locked, so an unlocked alternative keeps it usable.
+-            Set<Component> hints = includeHints ? new LinkedHashSet<>() : Set.of();
++            // Only show hints if every candidate is locked, so an unlocked alternative keeps it usable.
++            Set<Component> hints = new LinkedHashSet<>();
+             for (var candidate : tag.getEmiStacks()) {
+-                var candidateIndicator = stackIndicator(candidate, includeHints);
++                var candidateIndicator = stackIndicator(candidate);
+                 if (!candidateIndicator.locked()) return Indicator.NONE;
+-                if (includeHints) hints.addAll(candidateIndicator.hints());
++                hints.addAll(candidateIndicator.hints());
+             }
+-            return includeHints ? new Indicator(true, hints) : Indicator.LOCKED;
++            return new Indicator(true, hints);
+         }
+-        if (ingredient instanceof EmiStack stack) return stackIndicator(stack, includeHints);
++        if (ingredient instanceof EmiStack stack) return stackIndicator(stack);
+         // Native tags without a custom model display their first stack, not a cycling candidate.
+         var stacks = ingredient.getEmiStacks();
+-        return stacks.isEmpty() ? Indicator.NONE : stackIndicator(stacks.getFirst(), includeHints);
++        return stacks.isEmpty() ? Indicator.NONE : stackIndicator(stacks.getFirst());
+     }
+ 
+-    private static Indicator stackIndicator(EmiStack ingredient, boolean includeHints) {
++    private static Indicator stackIndicator(EmiStack ingredient) {
+         var stack = ingredient.getItemStack();
+         if (!ClientRecipeStageTooltips.isItemLocked(stack)) return Indicator.NONE;
+-        return includeHints
+-                ? new Indicator(true, new LinkedHashSet<>(ClientRecipeStageTooltips.forItem(stack)))
+-                : Indicator.LOCKED;
++        return new Indicator(true, new LinkedHashSet<>(ClientRecipeStageTooltips.forItem(stack)));
+     }
+ 
+     private record Indicator(boolean locked, Set<Component> hints) {
+         private static final Indicator NONE = new Indicator(false, Set.of());
+-        private static final Indicator LOCKED = new Indicator(true, Set.of());
+ 
+-        private Indicator withRecipe(EmiRecipe recipe, boolean includeHints) {
++        private Indicator withRecipe(EmiRecipe recipe) {
+             if (recipe == null) return this;
+             var backingRecipe = recipe.getBackingRecipe();
+             if (!ClientRecipeStageTooltips.isRecipeLocked(backingRecipe)) return this;
+-            if (!includeHints) return LOCKED;
+             Set<Component> combined = new LinkedHashSet<>(hints);
+             combined.addAll(ClientRecipeStageTooltips.forRecipe(backingRecipe));
+             return new Indicator(true, combined);
+diff --git a/src/main/java/com/mysterious/mystic/compat/astages/StageBadgeRenderer.java b/src/main/java/com/mysterious/mystic/compat/astages/StageBadgeRenderer.java
+deleted file mode 100644
+index e5b6d8c..0000000
+--- a/src/main/java/com/mysterious/mystic/compat/astages/StageBadgeRenderer.java
++++ /dev/null
+@@ -1,45 +0,0 @@
+-package com.mysterious.mystic.compat.astages;
+-
+-import com.mojang.blaze3d.systems.RenderSystem;
+-import net.minecraft.client.gui.GuiGraphics;
+-import net.minecraft.resources.ResourceLocation;
+-import net.neoforged.neoforge.client.GlStateBackup;
+-
+-public final class StageBadgeRenderer {
+-    private static final ResourceLocation UNKNOWN_ITEM_TEXTURE = ResourceLocation.fromNamespaceAndPath(
+-            "hardcoreastagesitem", "textures/item/unknown_item.png");
+-    private static int suppressionDepth;
+-
+-    private StageBadgeRenderer() {
+-    }
+-
+-    public static void draw(GuiGraphics graphics, int iconX, int iconY) {
+-        // Commit queued icons before this immediate overlay. Tooltips render afterwards;
+-        // the badge must not leave depth that can hide their background or text.
+-        var renderState = new GlStateBackup();
+-        RenderSystem.backupGlState(renderState);
+-        try {
+-            graphics.flush();
+-            RenderSystem.enableBlend();
+-            RenderSystem.defaultBlendFunc();
+-            RenderSystem.disableDepthTest();
+-            RenderSystem.depthMask(false);
+-            graphics.blit(UNKNOWN_ITEM_TEXTURE, iconX + 7, iconY, 9, 9, 0, 0, 16, 16, 16, 16);
+-        } finally {
+-            RenderSystem.restoreGlState(renderState);
+-        }
+-    }
+-
+-    public static void withoutItemBadges(Runnable render) {
+-        suppressionDepth++;
+-        try {
+-            render.run();
+-        } finally {
+-            suppressionDepth--;
+-        }
+-    }
+-
+-    public static boolean itemBadgesSuppressed() {
+-        return suppressionDepth > 0;
+-    }
+-}
+diff --git a/src/main/java/com/mysterious/mystic/mixin/EmiRecipeStageBadgeMixin.java b/src/main/java/com/mysterious/mystic/mixin/EmiRecipeStageBadgeMixin.java
+deleted file mode 100644
+index 12823f9..0000000
+--- a/src/main/java/com/mysterious/mystic/mixin/EmiRecipeStageBadgeMixin.java
++++ /dev/null
+@@ -1,29 +0,0 @@
+-package com.mysterious.mystic.mixin;
+-
+-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+-import com.mysterious.mystic.compat.astages.EmiStageIndicators;
+-import com.mysterious.mystic.compat.astages.StageBadgeRenderer;
+-import dev.emi.emi.api.widget.SlotWidget;
+-import dev.emi.emi.api.widget.Widget;
+-import net.minecraft.client.gui.GuiGraphics;
+-import org.spongepowered.asm.mixin.Mixin;
+-import org.spongepowered.asm.mixin.Pseudo;
+-import org.spongepowered.asm.mixin.injection.At;
+-
+-@Pseudo
+-@Mixin(targets = "dev.emi.emi.screen.RecipeScreen", remap = false)
+-public abstract class EmiRecipeStageBadgeMixin {
+-    // Goes through Widget.render so it also covers JEI categories displayed via JEMI.
+-    @WrapOperation(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", at = @At(value = "INVOKE",
+-            target = "Ldev/emi/emi/api/widget/Widget;render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V"))
+-    private void eicore$drawRecipeBadge(Widget widget, GuiGraphics graphics, int mouseX, int mouseY,
+-                                        float delta, Operation<Void> original) {
+-        if (!(widget instanceof SlotWidget slot)) {
+-            original.call(widget, graphics, mouseX, mouseY, delta);
+-            return;
+-        }
+-        StageBadgeRenderer.withoutItemBadges(() -> original.call(widget, graphics, mouseX, mouseY, delta));
+-        EmiStageIndicators.drawResultBadge(graphics, slot);
+-    }
+-}
+diff --git a/src/main/java/com/mysterious/mystic/mixin/EmiSidebarStageBadgeMixin.java b/src/main/java/com/mysterious/mystic/mixin/EmiSidebarStageBadgeMixin.java
+deleted file mode 100644
+index 4056a71..0000000
+--- a/src/main/java/com/mysterious/mystic/mixin/EmiSidebarStageBadgeMixin.java
++++ /dev/null
+@@ -1,29 +0,0 @@
+-package com.mysterious.mystic.mixin;
+-
+-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+-import com.mysterious.mystic.compat.astages.EmiStageIndicators;
+-import com.mysterious.mystic.compat.astages.StageBadgeRenderer;
+-import dev.emi.emi.runtime.EmiDrawContext;
+-import dev.emi.emi.screen.EmiScreenManager;
+-import org.spongepowered.asm.mixin.Mixin;
+-import org.spongepowered.asm.mixin.Pseudo;
+-
+-@Pseudo
+-@Mixin(targets = "dev.emi.emi.screen.EmiScreenManager$ScreenSpace", remap = false)
+-public abstract class EmiSidebarStageBadgeMixin {
+-    @WrapMethod(method = "render(Ldev/emi/emi/runtime/EmiDrawContext;IIFI)V")
+-    private void eicore$drawStageBadges(EmiDrawContext context, int mouseX, int mouseY,
+-                                        float delta, int start, Operation<Void> original) {
+-        // The native decorator also runs inside EMI's direct rendering branch.
+-        // Suppression is scoped in a finally block and the sidebar draws one badge after its batch is flushed.
+-        StageBadgeRenderer.withoutItemBadges(() -> original.call(context, mouseX, mouseY, delta, start));
+-        var space = (EmiScreenManager.ScreenSpace) (Object) this;
+-        var entries = space.getStacks();
+-        int visibleCount = Math.min(space.pageSize, entries.size() - start);
+-        for (int index = 0; index < visibleCount; index++) {
+-            EmiStageIndicators.drawItemBadge(context.raw(), entries.get(start + index),
+-                    space.getRawX(index) + 1, space.getRawY(index) + 1);
+-        }
+-    }
+-}
+diff --git a/src/main/java/com/mysterious/mystic/mixin/HardcoreAStagesItemModelMixin.java b/src/main/java/com/mysterious/mystic/mixin/HardcoreAStagesItemModelMixin.java
+deleted file mode 100644
+index c9d9ffd..0000000
+--- a/src/main/java/com/mysterious/mystic/mixin/HardcoreAStagesItemModelMixin.java
++++ /dev/null
+@@ -1,18 +0,0 @@
+-package com.mysterious.mystic.mixin;
+-
+-import java.util.List;
+-import net.minecraft.world.item.Item;
+-import org.spongepowered.asm.mixin.Mixin;
+-import org.spongepowered.asm.mixin.Pseudo;
+-import org.spongepowered.asm.mixin.injection.At;
+-import org.spongepowered.asm.mixin.injection.Inject;
+-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+-
+-@Pseudo
+-@Mixin(targets = "com.liquor.hardcoreastagesitem.utils.ModelOperation", remap = false)
+-public abstract class HardcoreAStagesItemModelMixin {
+-    @Inject(method = "replaceModel(Ljava/util/List;Z)V", at = @At("HEAD"), cancellable = true)
+-    private static void eicore$keepOriginalItemModels(List<Item> items, boolean lock, CallbackInfo callback) {
+-        callback.cancel();
+-    }
+-}
+diff --git a/src/main/resources/META-INF/neoforge.mods.toml b/src/main/resources/META-INF/neoforge.mods.toml
+index 00aaf59..a36ab4d 100644
+--- a/src/main/resources/META-INF/neoforge.mods.toml
++++ b/src/main/resources/META-INF/neoforge.mods.toml
+@@ -4,7 +4,7 @@ license = "MIT"
+ 
+ [[mods]]
+ modId = "eicore"
+-version = "1.0.36"
++version = "1.0.37"
+ displayName = "EI core"
+ authors = "JianJian_"
+ description = '''EI core - Entropy-Increase core mod'''
+@@ -162,10 +162,3 @@ type = "required"
+ versionRange = "[2.5.3-1.21.1,)"
+ ordering = "AFTER"
+ side = "BOTH"
+-
+-[[dependencies.eicore]]
+-modId = "hardcoreastagesitem"
+-type = "required"
+-versionRange = "[1.2.1-1.21.1,)"
+-ordering = "AFTER"
+-side = "BOTH"
+diff --git a/src/main/resources/eicore.mixins.json b/src/main/resources/eicore.mixins.json
+index 2406f33..dbe1ace 100644
+--- a/src/main/resources/eicore.mixins.json
++++ b/src/main/resources/eicore.mixins.json
+@@ -28,9 +28,6 @@
+     "AStagesEmiRecipeVisibilityMixin",
+     "JeiRecipeStageTooltipMixin",
+     "EmiRecipeStageTooltipMixin",
+-    "EmiRecipeStageBadgeMixin",
+-    "EmiSidebarStageBadgeMixin",
+-    "EmiSidebarStageTooltipMixin",
+-    "HardcoreAStagesItemModelMixin"
++    "EmiSidebarStageTooltipMixin"
+   ]
+ }

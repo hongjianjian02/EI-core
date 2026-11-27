@@ -3,7 +3,7 @@ plugins {
     id 'net.neoforged.moddev'
 }
 
-version = '1.0.36'
+version = '1.0.37'
 group = 'com.mysterious'
 
 base {
@@ -14,6 +14,51 @@ java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
+}
+
+def anvilGuideTestResources = layout.buildDirectory.dir('generated/anvilGuideTestResources')
+
+tasks.register('generateAnvilGuideTestModMetadata') {
+    outputs.dir(anvilGuideTestResources)
+
+    doLast {
+        def metadataFile = anvilGuideTestResources.get().file('META-INF/neoforge.mods.toml').asFile
+        metadataFile.parentFile.mkdirs()
+        metadataFile.text = '''
+modLoader="javafml"
+loaderVersion="[4,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="eicore_anvil_guide_test"
+version="1.0.0"
+displayName="EI Core Anvil Guide Test Harness"
+
+[[mixins]]
+config="eicore.anvil-guide.mixins.json"
+'''
+        def mixinConfig = anvilGuideTestResources.get().file('eicore.anvil-guide.mixins.json').asFile
+        mixinConfig.parentFile.mkdirs()
+        mixinConfig.text = file('src/main/resources/eicore.anvil-guide.mixins.json').text
+    }
+}
+
+sourceSets {
+    anvilGuideTestMod {
+        java {
+            srcDir 'src/main/java'
+            include 'com/mysterious/mystic/compat/anvilguide/**'
+        }
+        resources {
+            setSrcDirs([anvilGuideTestResources])
+        }
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + sourceSets.main.output.classesDirs + sourceSets.test.output
+    }
+}
+
+tasks.named('processAnvilGuideTestModResources').configure {
+    dependsOn tasks.named('generateAnvilGuideTestModMetadata')
 }
 
 neoForge {
@@ -28,7 +73,20 @@ neoForge {
     runs {
         client {
             client()
+            loadedMods = [mods.mysterious]
         }
+    }
+
+    mods {
+        anvilGuideTest {
+            sourceSet sourceSets.anvilGuideTestMod
+        }
+    }
+
+    unitTest {
+        testedMod = mods.anvilGuideTest
+        loadedMods = [mods.anvilGuideTest]
+        enable()
     }
 }
 
@@ -37,7 +95,14 @@ repositories {
     maven { url = uri('https://maven.theillusivec4.top/') }
 }
 
+configurations {
+    jeiAnvilGuideTestApi
+}
+
 dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    jeiAnvilGuideTestApi files('libs/jei.jar')
     compileOnly files('libs/astages.jar')
     compileOnly files('libs/jei.jar')
     compileOnly files('libs/curios.jar')
@@ -51,4 +116,20 @@ dependencies {
     compileOnly files('libs/lootr.jar')
     compileOnly files('libs/solcarrot.jar', 'libs/solapplepie.jar')
     compileOnly files('libs/sophisticatedcore.jar', 'libs/sophisticatedbackpacks.jar', 'libs/sophisticatedstorage.jar', 'libs/ftbchunks.jar')
+}
+
+configurations.testCompileOnly.extendsFrom(configurations.compileOnly)
+
+tasks.named('test', Test).configure {
+    useJUnitPlatform()
+    // Loaded only by EmiMixinClassLoadingTest as the negative class-loading probe.
+    exclude '**/ForbiddenMixinHelperProbe.class'
+    classpath = sourceSets.test.output + sourceSets.main.output.classesDirs + configurations.testRuntimeClasspath
+}
+
+tasks.named('processTestResources', ProcessResources).configure {
+    from({ configurations.jeiAnvilGuideTestApi.collect { zipTree(it) } }) {
+        include 'mezz/jei/api/**'
+        include 'mezz/jei/library/plugins/vanilla/anvil/AnvilRecipe.class'
+    }
 }
