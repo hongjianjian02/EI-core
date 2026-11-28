@@ -4,7 +4,7 @@ license = "MIT"
 
 [[mods]]
 modId = "eicore"
-version = "1.0.37"
+version = "1.0.38"
 displayName = "EI core"
 authors = "JianJian_"
 description = '''EI core - Entropy-Increase core mod'''
@@ -39,6 +39,10 @@ config = "eicore.anvil-guide.mixins.json"
 [[mixins]]
 config = "eicore.lootr-neovitae.mixins.json"
 requiredMods = ["lootr", "neovitae"]
+
+[[mixins]]
+config = "eicore.rechiseled-emi.mixins.json"
+requiredMods = ["rechiseled", "emi", "jei"]
 
 [[dependencies.eicore]]
 modId = "draconicevolution"
